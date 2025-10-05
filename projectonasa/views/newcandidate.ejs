@@ -1,221 +1,55 @@
-<div id="workspace" class="p-6 text-space-star h-screen overflow-y-auto">
-      <div class="flex justify-between mb-4">
-            <button id="addRowBtn" class="bg-space-accent px-4 py-2 rounded">➕ Add Row</button>
-            <button id="submitBtn" class="bg-green-600 px-4 py-2 rounded">🚀 Submit</button>
-          </div>
+<div id="workspace" class="p-6 text-space-star" style="min-height: 100vh;">
+  <!-- Botones principales -->
+  <div class="flex justify-between mb-4">
+    <button id="addRowBtn" class="bg-space-accent px-4 py-2 rounded">➕ Add Row</button>
+    <button id="submitBtn" class="bg-green-600 px-4 py-2 rounded">🚀 Submit</button>
+  </div>
 
-        <div class="flex gap-6 items-start">
-           
-                <div id="planetDisplay" class="flex-shrink-0 relative w-64 h-64 max-h-[500px]">
-                  <div class="absolute inset-0 flex items-center justify-center">
-                                <div class="w-64 h-64 border border-planet rounded-full animate-spin-slow relative">
-                                        <div
-                        class="absolute w-8 h-8 bg-space-accent rounded-full shadow-lg animate-orbit"></div>
-                            </div>
-                      </div>
-                </div>
+  <!-- Contenedor principal -->
+  <div class="flex gap-6 items-start">
+    
+    <!-- 🪐 Planeta a la izquierda -->
+    <div id="planetDisplay" class="flex-shrink-0 relative w-64 h-64">
+      <div class="absolute inset-0 flex items-center justify-center">
+        <div class="w-64 h-64 border border-planet rounded-full animate-spin-slow relative">
+          <div class="absolute w-8 h-8 bg-space-accent rounded-full shadow-lg animate-orbit"></div>
+        </div>
+      </div>
+    </div>
 
-                <div class="flex-1 flex flex-col">
-                 
-                        <div id="tableSection"
-                class="overflow-x-auto overflow-y-auto border border-planet rounded-lg max-h-[500px]">
-                        <table class="min-w-full border-collapse">
-                              <thead>
-                                    <tr class="bg-space-darker text-space-star text-center">
-                                          <th class="px-2 py-2 rotate-header">koi_score</th>
-                                          <th class="px-2 py-2 rotate-header">koi_fwm_stat_sig</th>
-                                          <th class="px-2 py-2 rotate-header">koi_srho_err2</th>
-                                          <th class="px-2 py-2 rotate-header">koi_dor_err2</th>
-                                          <th class="px-2 py-2 rotate-header">koi_dor_err1</th>
-                                          <th class="px-2 py-2 rotate-header">koi_incl</th>
-                                          <th class="px-2 py-2 rotate-header">koi_prad_err1</th>
-                                          <th class="px-2 py-2 rotate-header">koi_count</th>
-                                          <th class="px-2 py-2 rotate-header">koi_dor</th>
-                                          <th class="px-2 py-2 rotate-header">koi_dikco_mdec_err</th>
-                                          <th class="px-2 py-2 rotate-header">koi_period_err1</th>
-                                          <th class="px-2 py-2 rotate-header">koi_period_err2</th>
-                                          <th class="px-2 py-2 rotate-header">koi_dikco_mra_err</th>
-                                          <th class="px-2 py-2 rotate-header">koi_prad_err2,continuous</th>
-                                          <th class="px-2 py-2 rotate-header">koi_dikco_msky_err</th>
-                                          <th class="px-2 py-2 rotate-header">koi_max_sngle_ev</th>
-                                          <th class="px-2 py-2 rotate-header">koi_prad,continuous</th>
-                                          <th class="px-2 py-2 rotate-header">koi_dicco_mdec_err</th>
-                                          <th class="px-2 py-2 rotate-header">koi_model_snr</th>
-                                          <th class="px-2 py-2 rotate-header">koi_dicco_mra_err</th>
-                                        </tr>
-                                  </thead>
+    <!-- 📊 Contenedor de entrada de datos -->
+    <div id="inputContainer" class="flex-1">
+      <!-- Aquí se inyectará el formulario de entrada -->
+    </div>
 
-                              <tbody id="candidateTableBody">
-                                    <tr>
-                            <td colspan="20" class="text-center py-4 text-gray-500">No hay datos</td>
-                        </tr>
-                                  </tbody>
-                            </table>
-                      </div>
+    <!-- 📋 Contenedor de resultados (oculto inicialmente) -->
+    <div id="resultContainer" class="flex-1 hidden">
+      <!-- Aquí se inyectarán los resultados -->
+    </div>
 
-                        <div id="resultSection"
-                class="hidden border border-planet rounded-lg max-h-[500px] overflow-y-auto">
-                              </div>
-
-                </div>
-
-          </div>
+  </div>
 </div>
 
+<!-- Script -->
 <script src="/js/newcandidate.js"></script>
 
+<!-- Estilos -->
 <style>
-    .rotate-header {
-        writing-mode: vertical-rl;
-        transform: rotate(180deg);
-        white-space: nowrap;
-        vertical-align: middle;
-        font-size: 0.75rem;
-        font-weight: bold;
-        padding: 8px 2px;
-    }
+  .animate-spin-slow {
+    animation: spin 20s linear infinite;
+  }
 
-    input[type="text"] {
-        border: 1px solid #555;
-        border-radius: 4px;
-        padding: 4px;
-        background-color: #111;
-        color: #fff;
-        text-align: center;
-        width: 100%;
-    }
+  .animate-orbit {
+    animation: orbit 20s linear infinite;
+  }
 
-    /* Animaciones para el planeta */
-    @keyframes spin-slow {
-        from {
-            transform: rotate(0deg);
-        }
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
 
-        to {
-            transform: rotate(360deg);
-        }
-    }
-
-    @keyframes orbit {
-        from {
-            transform: rotate(0deg) translateX(128px) rotate(0deg);
-        }
-
-        to {
-            transform: rotate(360deg) translateX(128px) rotate(-360deg);
-        }
-    }
-
-    .animate-spin-slow {
-        animation: spin-slow 20s linear infinite;
-    }
-
-    .animate-orbit {
-        animation: orbit 20s linear infinite;
-    }
-
-    /* Scroll general */
-    body,
-    html {
-        overflow-y: auto;
-        height: 100%;
-    }
-
-    /* Estilos para la visualización de resultados */
-    .candidate-data {
-        background-color: #0f172a;
-        padding: 2rem;
-        height: 100%;
-        min-height: 500px;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .data-header {
-        color: #60a5fa;
-        font-size: 1.5rem;
-        font-weight: bold;
-        text-align: center;
-        margin-bottom: 2rem;
-        border-bottom: 2px solid #334155;
-        padding-bottom: 1rem;
-    }
-
-    .data-content {
-        flex: 1;
-        overflow-y: auto;
-    }
-
-    .data-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 1rem 1.5rem;
-        border-bottom: 1px solid #1e293b;
-        transition: all 0.3s ease;
-    }
-
-    .data-row:hover {
-        background-color: #1e293b;
-        transform: translateX(5px);
-    }
-
-    .data-row:last-child {
-        border-bottom: none;
-    }
-
-    .attr-name {
-        color: #93c5fd;
-        font-family: 'Courier New', monospace;
-        font-size: 0.9rem;
-        font-weight: 600;
-        min-width: 250px;
-    }
-
-    .attr-value {
-        color: #f8fafc;
-        font-family: 'Courier New', monospace;
-        font-size: 0.9rem;
-        font-weight: 500;
-        text-align: right;
-        flex: 1;
-        background: rgba(30, 41, 59, 0.5);
-        padding: 0.5rem 1rem;
-        border-radius: 4px;
-        border-left: 3px solid #60a5fa;
-    }
-
-    .success-message {
-        background: linear-gradient(135deg, #10b981, #059669);
-        color: white;
-        padding: 1.5rem;
-        border-radius: 8px;
-        text-align: center;
-        font-weight: bold;
-        font-size: 1.1rem;
-        margin-top: 2rem;
-        animation: pulse 2s infinite;
-        box-shadow: 0 4px 6px rgba(5, 150, 105, 0.3);
-    }
-
-    @keyframes pulse {
-
-        0%,
-        100% {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        50% {
-            opacity: 0.9;
-            transform: scale(1.02);
-        }
-    }
-
-    /* Asegurar que ambos contenedores tengan el mismo tamaño */
-    #tableSection,
-    #resultSection {
-        width: 100%;
-        min-height: 500px;
-    }
+  @keyframes orbit {
+    from { transform: rotate(0deg) translateX(128px) rotate(0deg); }
+    to { transform: rotate(360deg) translateX(128px) rotate(-360deg); }
+  }
 </style>
