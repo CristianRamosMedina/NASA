@@ -1,0 +1,36 @@
+{
+  "model_type": "Random Forest Classifier",
+  "n_features": 20,
+  "features": [
+    "koi_score",
+    "koi_fwm_stat_sig",
+    "koi_srho_err2",
+    "koi_dor_err2",
+    "koi_dor_err1",
+    "koi_incl",
+    "koi_prad_err1",
+    "koi_count",
+    "koi_dor",
+    "koi_dikco_mdec_err",
+    "koi_period_err1",
+    "koi_period_err2",
+    "koi_dikco_mra_err",
+    "koi_prad_err2",
+    "koi_dikco_msky_err",
+    "koi_max_sngle_ev",
+    "koi_prad",
+    "koi_dicco_mdec_err",
+    "koi_model_snr",
+    "koi_dicco_mra_err"
+  ],
+  "n_classes": 3,
+  "classes": [
+    "CANDIDATE",
+    "CONFIRMED",
+    "FALSE POSITIVE"
+  ],
+  "train_accuracy": 0.9782531824611033,
+  "test_accuracy": 0.8925035360678925,
+  "n_train_samples": 5656,
+  "n_test_samples": 1414
+}

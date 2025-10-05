@@ -1,0 +1,124 @@
+{
+  "features": [
+    {
+      "feature": "koi_score",
+      "definicion": "Nivel de confianza asignado por el algoritmo robovetter de Kepler a la clasificación del candidato como planeta.",
+      "unidades": "adimensional (0 a 1)",
+      "utilidad": "Cuantifica la probabilidad de que un KOI sea un planeta real; valores cercanos a 1 indican alta fiabilidad."
+    },
+    {
+      "feature": "koi_fwm_stat_sig",
+      "definicion": "Significancia estadística de la coincidencia del flujo de la fuente en la imagen (flux-weighted mean).",
+      "unidades": "porcentaje (%)",
+      "utilidad": "Ayuda a identificar falsos positivos debidos a desplazamientos en el centroide del flujo luminoso."
+    },
+    {
+      "feature": "koi_srho_err2",
+      "definicion": "Incertidumbre inferior de la densidad estelar ajustada mediante el modelo de tránsito.",
+      "unidades": "g/cm³",
+      "utilidad": "Evalúa la precisión del ajuste del modelo; densidades estelares mal determinadas afectan los radios planetarios."
+    },
+    {
+      "feature": "koi_dor_err2",
+      "definicion": "Incertidumbre inferior de la razón entre la distancia planeta-estrella y el radio estelar (a/R*).",
+      "unidades": "adimensional",
+      "utilidad": "Relaciona el tamaño del tránsito con la geometría orbital; errores grandes reducen la confiabilidad del radio planetario."
+    },
+    {
+      "feature": "koi_dor_err1",
+      "definicion": "Incertidumbre superior de la razón a/R*.",
+      "unidades": "adimensional",
+      "utilidad": "Complementa koi_dor_err2 para evaluar la simetría del error; útil en validación de ajuste."
+    },
+    {
+      "feature": "koi_incl",
+      "definicion": "Inclinación orbital del planeta respecto a la línea de visión.",
+      "unidades": "grados (°)",
+      "utilidad": "Controla la profundidad y forma del tránsito; inclinaciones cercanas a 90° son tránsitos completos."
+    },
+    {
+      "feature": "koi_prad_err1",
+      "definicion": "Incertidumbre superior del radio planetario.",
+      "unidades": "radios terrestres (R⊕)",
+      "utilidad": "Mide la precisión de la estimación del tamaño planetario; relevante para clasificación por tipo (rocoso/gaseoso)."
+    },
+    {
+      "feature": "koi_count",
+      "definicion": "Número de planetas detectados en el mismo sistema Kepler Input Catalog (KIC).",
+      "unidades": "entero",
+      "utilidad": "Identifica sistemas multiplanetarios; la multiplicidad afecta la probabilidad de falsos positivos."
+    },
+    {
+      "feature": "koi_dor",
+      "definicion": "Relación entre la distancia planeta-estrella y el radio estelar (a/R*).",
+      "unidades": "adimensional",
+      "utilidad": "Clave para determinar la duración y profundidad del tránsito; correlaciona con el semieje mayor y el periodo orbital."
+    },
+    {
+      "feature": "koi_dikco_mdec_err",
+      "definicion": "Incertidumbre de la desviación del centroide en declinación (delta-dec) medida por el modelo PRF.",
+      "unidades": "arcosegundos (″)",
+      "utilidad": "Detecta desplazamientos que podrían indicar fuentes contaminantes o estrellas binarias."
+    },
+    {
+      "feature": "koi_period_err1",
+      "definicion": "Incertidumbre superior del periodo orbital.",
+      "unidades": "días",
+      "utilidad": "Refleja la precisión temporal del tránsito; errores altos complican predicciones y seguimiento."
+    },
+    {
+      "feature": "koi_period_err2",
+      "definicion": "Incertidumbre inferior del periodo orbital.",
+      "unidades": "días",
+      "utilidad": "Permite estimar la simetría del error del periodo; útil en validaciones de modelo y efemérides."
+    },
+    {
+      "feature": "koi_dikco_mra_err",
+      "definicion": "Incertidumbre en el desplazamiento de ascensión recta (delta-RA) del modelo PRF respecto al KIC.",
+      "unidades": "arcosegundos (″)",
+      "utilidad": "Ayuda a detectar desplazamientos espaciales de la fuente; útil para descartar contaminaciones."
+    },
+    {
+      "feature": "koi_prad_err2",
+      "definicion": "Incertidumbre inferior del radio planetario.",
+      "unidades": "radios terrestres (R⊕)",
+      "utilidad": "Complementa koi_prad_err1; permite cuantificar la calidad del ajuste de tamaño planetario."
+    },
+    {
+      "feature": "koi_dikco_msky_err",
+      "definicion": "Incertidumbre del desplazamiento angular en el cielo (delta-θ) del modelo PRF respecto al KIC.",
+      "unidades": "arcosegundos (″)",
+      "utilidad": "Usado para validar alineación de la fuente observada con la estrella objetivo."
+    },
+    {
+      "feature": "koi_max_sngle_ev",
+      "definicion": "Máximo valor estadístico de un solo evento de tránsito detectado.",
+      "unidades": "adimensional (SNR)",
+      "utilidad": "Ayuda a identificar si una sola caída domina la señal; útil para detectar outliers o falsos positivos."
+    },
+    {
+      "feature": "koi_prad",
+      "definicion": "Radio planetario estimado a partir del ajuste del modelo de tránsito.",
+      "unidades": "radios terrestres (R⊕)",
+      "utilidad": "Parámetro físico fundamental para clasificar exoplanetas y analizar su composición probable."
+    },
+    {
+      "feature": "koi_dicco_mdec_err",
+      "definicion": "Incertidumbre del desplazamiento de declinación (delta-dec) en el modelo PRF basado en la fuente OOT.",
+      "unidades": "arcosegundos (″)",
+      "utilidad": "Verifica la coincidencia entre la fuente de tránsito y la estrella observada, reduciendo falsos positivos."
+    },
+    {
+      "feature": "koi_model_snr",
+      "definicion": "Relación señal-ruido del modelo de tránsito ajustado.",
+      "unidades": "adimensional",
+      "utilidad": "Mide la significancia estadística del tránsito; valores altos implican detección robusta."
+    },
+    {
+      "feature": "koi_dicco_mra_err",
+      "definicion": "Incertidumbre del desplazamiento de ascensión recta (delta-RA) en el modelo PRF de la fuente OOT.",
+      "unidades": "arcosegundos (″)",
+      "utilidad": "Complementa las métricas de centroide para validar que el tránsito ocurre en la estrella esperada."
+    }
+  ]
+}

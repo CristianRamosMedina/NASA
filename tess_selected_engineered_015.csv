@@ -1,0 +1,15 @@
+feature,type,is_flag,metric_name,metric_value,p_value,is_significant,is_selected,n_samples
+st_brightness_norm,continuous,False,spearman,0.2986785804555479,1.6783793746780268e-158,True,True,7703
+st_tmag,continuous,False,spearman,0.2986785804555479,1.6783793746780268e-158,True,True,7703
+st_tmag_value,continuous,False,spearman,0.2986785804555479,1.6783793746780268e-158,True,True,7703
+st_brightness_dist_product,continuous,False,spearman,0.2970080037225855,2.350017161582879e-152,True,True,7488
+st_distance_norm,continuous,False,spearman,0.2378742591643081,7.969446261072567e-97,True,True,7488
+st_dist,continuous,False,spearman,0.2378742591643081,7.969446261072567e-97,True,True,7488
+st_dist_value,continuous,False,spearman,0.2378742591643081,7.969446261072567e-97,True,True,7488
+st_disterr1,continuous,False,spearman,0.1835395417331738,4.693161306798404e-54,True,False,6996
+st_disterr2,continuous,False,spearman,0.1835395417331738,4.693161306798404e-54,True,False,6996
+pl_tranmiderr1,continuous,False,spearman,0.1793105930344491,1.3542343061819882e-56,True,False,7692
+pl_tranmiderr2,continuous,False,spearman,0.1793105930344491,1.3542343061819882e-56,True,False,7692
+st_pmdecerr2,continuous,False,spearman,0.1703216553434573,2.2763099805676904e-50,True,False,7569
+st_pmdecerr1,continuous,False,spearman,0.1703216553434573,2.2763099805676904e-50,True,False,7569
+pl_tranmid,continuous,False,spearman,0.1622853603231652,1.3022000037761288e-46,True,False,7703
