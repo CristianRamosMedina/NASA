@@ -13,42 +13,234 @@ window.addEventListener("resize", () => {
 // === Workspace dinámico ===
 const workspace = document.getElementById("workspace");
 
-// Función para mostrar contenido en el workspace y ocultar canvas
+// === Mostrar contenido dinámico ===
 function showContent(section) {
-  // Ocultar canvas
-  canvas.style.display = "none";
+  if (section !== "default") canvas.style.display = "none";
+  else canvas.style.display = "block";
 
-  // Limpiar workspace
   workspace.innerHTML = "";
 
-  switch(section) {
+  switch (section) {
     case "newCandidate":
       workspace.innerHTML = `
-        <h2 class="text-2xl font-bold mb-4">New Candidate</h2>
-        <p>No hay datos para mostrar</p>
+        <div class="bg-space-dark bg-opacity-80 p-6 rounded-xl shadow-lg">
+          <h2 class="text-2xl font-bold text-nasa mb-4">🪐 New Candidate</h2>
+
+          <!-- Contenedor doble -->
+          <div class="grid grid-cols-2 gap-4 overflow-y-auto max-h-[600px] border border-planet rounded-lg p-4">
+            
+            <!-- Tabla izquierda -->
+            <div class="overflow-y-auto max-h-[550px] border border-planet rounded-lg p-2">
+              <table class="min-w-full text-space-star text-sm">
+                <thead class="bg-space-darker text-left sticky top-0">
+                  <tr><th class="py-2 text-nasa">Left Attributes</th></tr>
+                </thead>
+                <tbody id="tableLeftBody" class="divide-y divide-planet">
+                  ${[
+                    "koi_score",
+                    "koi_fwm_stat_sig",
+                    "koi_srho_err2",
+                    "koi_dor_err2",
+                    "koi_dor_err1",
+                    "koi_incl",
+                    "koi_prad_err1",
+                    "koi_count",
+                    "koi_dor",
+                    "koi_dikco_mdec_err"
+                  ]
+                    .map(
+                      (attr) => `
+                    <tr>
+                      <td class="py-1 flex items-center gap-2">
+                        <span class="w-48 text-space-star">${attr}</span>
+                        <input type="number" placeholder="-" class="cell-input flex-1" />
+                      </td>
+                    </tr>`
+                    )
+                    .join("")}
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Tabla derecha -->
+            <div class="overflow-y-auto max-h-[550px] border border-planet rounded-lg p-2">
+              <table class="min-w-full text-space-star text-sm">
+                <thead class="bg-space-darker text-left sticky top-0">
+                  <tr><th class="py-2 text-nasa">Right Attributes</th></tr>
+                </thead>
+                <tbody id="tableRightBody" class="divide-y divide-planet">
+                  ${[
+                    "koi_period_err1",
+                    "koi_period_err2",
+                    "koi_dikco_mra_err",
+                    "koi_prad_err2_continuous",
+                    "koi_dikco_msky_err",
+                    "koi_max_sngle_ev",
+                    "koi_prad_continuous",
+                    "koi_dicco_mdec_err",
+                    "koi_model_snr",
+                    "koi_dicco_mra_err"
+                  ]
+                    .map(
+                      (attr) => `
+                    <tr>
+                      <td class="py-1 flex items-center gap-2">
+                        <span class="w-48 text-space-star">${attr}</span>
+                        <input type="number" placeholder="-" class="cell-input flex-1" />
+                      </td>
+                    </tr>`
+                    )
+                    .join("")}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Botón de envío -->
+          <div class="mt-4 flex justify-end">
+            <button id="submitBtn" class="px-4 py-2 bg-nasa text-space-dark font-bold rounded hover:bg-rocket transition-colors">
+              Submit
+            </button>
+          </div>
+
+          <!-- Contenedor del planeta -->
+          <div id="planetContainer" class="flex justify-center mt-8"></div>
+        </div>
+
+        <style>
+          .cell-input {
+            background-color: #0b0c10;
+            color: #00eaff;
+            border: 1px solid #00eaff55;
+            border-radius: 4px;
+            padding: 2px 4px;
+            font-size: 0.8rem;
+            text-align: center;
+            appearance: textfield;
+          }
+
+          /* Ocultar flechas de los inputs tipo number */
+          .cell-input::-webkit-outer-spin-button,
+          .cell-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+          }
+
+          .cell-input:focus {
+            outline: none;
+            border-color: #00eaff;
+          }
+
+          .overflow-y-auto {
+            scrollbar-width: thin;
+            scrollbar-color: #00eaff #0b0c10;
+          }
+
+          .overflow-y-auto::-webkit-scrollbar {
+            width: 8px;
+          }
+
+          .overflow-y-auto::-webkit-scrollbar-track {
+            background: #0b0c10;
+            border-radius: 8px;
+          }
+
+          .overflow-y-auto::-webkit-scrollbar-thumb {
+            background-color: #00eaff;
+            border-radius: 8px;
+          }
+        </style>
       `;
+
+      // === Lógica para mostrar el planeta ===
+      const submitBtn = document.getElementById("submitBtn");
+      const planetContainer = document.getElementById("planetContainer");
+
+      submitBtn.addEventListener("click", () => {
+        // Obtener valores de ambas tablas
+        const leftInputs = Array.from(document.querySelectorAll("#tableLeftBody input"));
+        const rightInputs = Array.from(document.querySelectorAll("#tableRightBody input"));
+        const leftLabels = Array.from(document.querySelectorAll("#tableLeftBody span"));
+        const rightLabels = Array.from(document.querySelectorAll("#tableRightBody span"));
+
+        const data = [];
+
+        leftInputs.forEach((input, i) => {
+          if (input.value.trim() !== "") {
+            data.push({ name: leftLabels[i].textContent, value: input.value });
+          }
+        });
+
+        rightInputs.forEach((input, i) => {
+          if (input.value.trim() !== "") {
+            data.push({ name: rightLabels[i].textContent, value: input.value });
+          }
+        });
+
+        if (data.length === 0) {
+          alert("⚠️ Por favor, llena al menos un valor antes de continuar.");
+          return;
+        }
+
+        // Mostrar el planeta con los atributos
+        planetContainer.innerHTML = "";
+
+        const exoplanets = ["e1.png", "e2.png", "e3.png", "e4.png"];
+        const randomImg = exoplanets[Math.floor(Math.random() * exoplanets.length)];
+
+        const planetDiv = document.createElement("div");
+        planetDiv.classList.add("flex", "flex-col", "items-center", "justify-center", "gap-4", "mt-8");
+
+        const planetImg = document.createElement("img");
+        planetImg.src = `/img/exoplanet/${randomImg}`;
+        planetImg.alt = "Exoplanet";
+        planetImg.classList.add(
+          "rounded-full",
+          "object-cover",
+          "border-4",
+          "border-space-star",
+          "shadow-lg",
+          "w-48",
+          "h-48",
+          "animate-spin-slow"
+        );
+
+        const attrDiv = document.createElement("div");
+        attrDiv.classList.add(
+          "flex",
+          "flex-col",
+          "items-start",
+          "gap-2",
+          "bg-space-darker",
+          "p-4",
+          "rounded-lg",
+          "w-full",
+          "max-w-md",
+          "overflow-y-auto",
+          "max-h-60"
+        );
+
+        data.forEach((item) => {
+          const row = document.createElement("div");
+          row.classList.add("flex", "items-center", "gap-2", "text-space-star");
+          row.innerHTML = `➡️ <span>${item.name}: ${item.value}</span>`;
+          attrDiv.appendChild(row);
+        });
+
+        const successMsg = document.createElement("div");
+        successMsg.textContent = "✅ Candidato visualizado exitosamente";
+        successMsg.classList.add("text-green-400", "font-semibold", "animate-pulse");
+
+        planetDiv.appendChild(planetImg);
+        planetDiv.appendChild(attrDiv);
+        planetDiv.appendChild(successMsg);
+
+        planetContainer.appendChild(planetDiv);
+      });
+
       break;
-    case "manageCandidate":
-      workspace.innerHTML = `
-        <h2 class="text-2xl font-bold mb-4">Manage Candidates</h2>
-        <p>No hay datos para mostrar</p>
-      `;
-      break;
-    case "newTable":
-      workspace.innerHTML = `
-        <h2 class="text-2xl font-bold mb-4">New Table</h2>
-        <p>No hay datos para mostrar</p>
-      `;
-      break;
-    case "manageTable":
-      workspace.innerHTML = `
-        <h2 class="text-2xl font-bold mb-4">Manage Tables</h2>
-        <p>No hay datos para mostrar</p>
-      `;
-      break;
+
     default:
-      // Mostrar el canvas nuevamente y contenido inicial
-      canvas.style.display = "block";
       workspace.innerHTML = `
         <h1 class="text-3xl font-bold text-rocket flex items-center">
           🚀 Welcome to ExoFinder
@@ -57,50 +249,11 @@ function showContent(section) {
           Select an option from the sidebar menu to continue.
         </p>
       `;
+      break;
   }
 }
 
-// === Manejo de submenus y enlaces ===
-function toggleMenu(id) {
-  // Ocultar todos los submenus
-  const allMenus = document.querySelectorAll('nav ul[id$="Menu"]');
-  allMenus.forEach(menu => {
-    if (menu.id !== id) menu.classList.add("hidden");
-  });
-
-  // Alterna el submenu seleccionado
-  const menu = document.getElementById(id);
-  menu.classList.toggle("hidden");
-}
-
-// === Configurar eventos de los links del menú ===
-document.addEventListener("DOMContentLoaded", () => {
-  // Candidate Menu
-  document.querySelectorAll("#candidateMenu a").forEach(link => {
-    link.addEventListener("click", e => {
-      e.preventDefault();
-      const section = link.textContent.replace(/\s+/g, "").toLowerCase();
-      if(section.includes("newcandidate")) showContent("newCandidate");
-      if(section.includes("managecandidates") || section.includes("managecandidate")) showContent("manageCandidate");
-    });
-  });
-
-  // Tables Menu
-  document.querySelectorAll("#tablesMenu a").forEach(link => {
-    link.addEventListener("click", e => {
-      e.preventDefault();
-      const section = link.textContent.replace(/\s+/g, "").toLowerCase();
-      if(section.includes("newtable")) showContent("newTable");
-      if(section.includes("managetables") || section.includes("managetable")) showContent("manageTable");
-    });
-  });
-
-  // Dashboard button: recarga y muestra planetas
-  const dashboardBtn = document.querySelector('button[onclick="location.reload()"]');
-  dashboardBtn.addEventListener("click", () => showContent("default"));
-});
-
-// === Clase Planeta ===
+// === Clase Planet + animación ===
 class Planet {
   constructor(x, y, radius, imgSrc, dx, dy) {
     this.x = x;
@@ -115,119 +268,42 @@ class Planet {
   draw() {
     ctx.save();
     ctx.beginPath();
-
-    if (this.img.src.includes("saturn")) {
-      ctx.ellipse(this.x, this.y, this.radius * 1.8, this.radius, 0, 0, Math.PI * 2);
-      ctx.clip();
-      ctx.drawImage(this.img, this.x - this.radius * 1.8, this.y - this.radius, this.radius * 3.6, this.radius * 2);
-    } else {
-      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      ctx.clip();
-      ctx.drawImage(this.img, this.x - this.radius, this.y - this.radius, this.radius * 2, this.radius * 2);
-    }
-
-    ctx.restore();
-  }
-
-  update(planets) {
-    this.x += this.dx;
-    this.y += this.dy;
-
-    if (this.x - this.radius < 0 || this.x + this.radius > canvas.width) this.dx *= -1;
-    if (this.y - this.radius < 0 || this.y + this.radius > canvas.height) this.dy *= -1;
-
-    for (let other of planets) {
-      if (other !== this) {
-        const dx = this.x - other.x;
-        const dy = this.y - other.y;
-        const dist = Math.hypot(dx, dy);
-        const minDist = this.radius + other.radius;
-        if (dist < minDist) {
-          const midX = (this.x + other.x) / 2;
-          const midY = (this.y + other.y) / 2;
-          createExplosion(midX, midY);
-
-          const angle = Math.atan2(dy, dx);
-          const overlap = (minDist - dist) / 2;
-
-          this.x += Math.cos(angle) * overlap;
-          this.y += Math.sin(angle) * overlap;
-          other.x -= Math.cos(angle) * overlap;
-          other.y -= Math.sin(angle) * overlap;
-
-          const tempDx = this.dx;
-          const tempDy = this.dy;
-          this.dx = other.dx;
-          this.dy = other.dy;
-          other.dx = tempDx;
-          other.dy = tempDy;
-        }
-      }
-    }
-
-    this.draw();
-  }
-}
-
-// === Sistema de explosiones ===
-let particles = [];
-
-class Particle {
-  constructor(x, y, color) {
-    this.x = x;
-    this.y = y;
-    this.radius = Math.random() * 3;
-    this.color = color;
-    this.dx = (Math.random() - 0.5) * 6;
-    this.dy = (Math.random() - 0.5) * 6;
-    this.life = 100;
-  }
-
-  draw() {
-    ctx.globalAlpha = this.life / 100;
-    ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-    ctx.fillStyle = this.color;
-    ctx.shadowBlur = 10;
-    ctx.shadowColor = this.color;
-    ctx.fill();
-    ctx.globalAlpha = 1;
+    ctx.clip();
+    ctx.drawImage(
+      this.img,
+      this.x - this.radius,
+      this.y - this.radius,
+      this.radius * 2,
+      this.radius * 2
+    );
+    ctx.restore();
   }
 
   update() {
     this.x += this.dx;
     this.y += this.dy;
-    this.life--;
+    if (this.x - this.radius < 0 || this.x + this.radius > canvas.width)
+      this.dx *= -1;
+    if (this.y - this.radius < 0 || this.y + this.radius > canvas.height)
+      this.dy *= -1;
     this.draw();
   }
 }
 
-function createExplosion(x, y) {
-  for (let i = 0; i < 40; i++) {
-    const colors = ["orange", "yellow", "red", "white"];
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    particles.push(new Particle(x, y, color));
-  }
-}
-
-// === Crear planetas ===
 const planets = [
   new Planet(200, 200, 40, "/img/earth.png", 0.5, 0.4),
   new Planet(600, 400, 60, "/img/mars.png", -0.5, 0.5),
   new Planet(1000, 300, 50, "/img/jupiter.png", 0.4, -0.5),
   new Planet(400, 600, 30, "/img/venus.png", -0.4, -0.5),
-  new Planet(800, 500, 70, "/img/saturn.png", 0.5, -0.4)
+  new Planet(800, 500, 70, "/img/saturn.png", 0.5, -0.4),
 ];
 
-// === Animación ===
 function animate() {
-  if(canvas.style.display !== "none") {
+  if (canvas.style.display !== "none") {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    planets.forEach(p => p.update(planets));
-    particles = particles.filter(p => p.life > 0);
-    particles.forEach(p => p.update());
+    planets.forEach((p) => p.update());
   }
   requestAnimationFrame(animate);
 }
-
 animate();

@@ -1,0 +1,107 @@
+<div id="workspace" class="p-6 text-space-star h-screen overflow-y-auto">
+  <div class="flex justify-between mb-4">
+    <button id="addRowBtn" class="bg-space-accent px-4 py-2 rounded">➕ Add Row</button>
+    <button id="submitBtn" class="bg-green-600 px-4 py-2 rounded">🚀 Submit</button>
+  </div>
+
+  <!-- Contenedor general en fila -->
+  <div class="flex gap-6 items-start">
+    
+    <!-- 🪐 Planeta a la izquierda -->
+    <div id="planetContainer" class="flex-shrink-0 relative w-64 h-64">
+      <div class="absolute inset-0 flex items-center justify-center">
+        <!-- Órbita -->
+        <div class="w-64 h-64 border border-planet rounded-full animate-spin-slow relative">
+          <!-- Planeta -->
+          <div class="absolute w-8 h-8 bg-space-accent rounded-full shadow-lg animate-orbit"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 📊 Tabla de datos a la derecha -->
+    <div class="flex-1 overflow-x-auto overflow-y-auto border border-planet rounded-lg max-h-[500px]">
+      <table class="min-w-full border-collapse">
+        <thead>
+          <tr class="bg-space-darker text-space-star text-center">
+            <th class="px-2 py-2 rotate-header">koi_score</th>
+            <th class="px-2 py-2 rotate-header">koi_fwm_stat_sig</th>
+            <th class="px-2 py-2 rotate-header">koi_srho_err2</th>
+            <th class="px-2 py-2 rotate-header">koi_dor_err2</th>
+            <th class="px-2 py-2 rotate-header">koi_dor_err1</th>
+            <th class="px-2 py-2 rotate-header">koi_incl</th>
+            <th class="px-2 py-2 rotate-header">koi_prad_err1</th>
+            <th class="px-2 py-2 rotate-header">koi_count</th>
+            <th class="px-2 py-2 rotate-header">koi_dor</th>
+            <th class="px-2 py-2 rotate-header">koi_dikco_mdec_err</th>
+            <th class="px-2 py-2 rotate-header">koi_period_err1</th>
+            <th class="px-2 py-2 rotate-header">koi_period_err2</th>
+            <th class="px-2 py-2 rotate-header">koi_dikco_mra_err</th>
+            <th class="px-2 py-2 rotate-header">koi_prad_err2,continuous</th>
+            <th class="px-2 py-2 rotate-header">koi_dikco_msky_err</th>
+            <th class="px-2 py-2 rotate-header">koi_max_sngle_ev</th>
+            <th class="px-2 py-2 rotate-header">koi_prad,continuous</th>
+            <th class="px-2 py-2 rotate-header">koi_dicco_mdec_err</th>
+            <th class="px-2 py-2 rotate-header">koi_model_snr</th>
+            <th class="px-2 py-2 rotate-header">koi_dicco_mra_err</th>
+          </tr>
+        </thead>
+
+        <tbody id="candidateTableBody">
+          <tr><td colspan="20" class="text-center py-4 text-gray-500">No hay datos</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- Script -->
+<script src="/js/newcandidate.js"></script>
+
+<!-- Estilos -->
+<style>
+  .rotate-header {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    white-space: nowrap;
+    vertical-align: middle;
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 8px 2px;
+  }
+
+  input[type="text"] {
+    border: 1px solid #555;
+    border-radius: 4px;
+    padding: 4px;
+    background-color: #111;
+    color: #fff;
+    text-align: center;
+    width: 100%;
+  }
+
+  /* Animaciones para el planeta */
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes orbit {
+    from { transform: rotate(0deg) translateX(128px) rotate(0deg); }
+    to { transform: rotate(360deg) translateX(128px) rotate(-360deg); }
+  }
+
+  .animate-spin-slow {
+    animation: spin-slow 20s linear infinite;
+  }
+
+  .animate-orbit {
+    animation: orbit 20s linear infinite;
+  }
+
+  /* Scroll general */
+  body, html {
+    overflow-y: auto;
+    height: 100%;
+  }
+</style>
