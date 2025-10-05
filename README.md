@@ -12,31 +12,25 @@ Complete machine learning pipeline for exoplanet classification using Kepler and
 NASA/
 ├── Datasets/
 │   ├── cumulative_2025.10.04_08.50.10.csv    # Kepler (9,564 exoplanets, 141 features)
-│   ├── TOI_2025.10.04_08.50.19.csv           # TESS (7,703 exoplanets, 87 features)
-│   └── k2pandc_2025.10.04_08.51.50.csv       # K2 (4,004 exoplanets, 295 features)
+│   └── TOI_2025.10.04_08.50.19.csv           # TESS (7,703 exoplanets, 87 features)
 │
 ├── kepler_final/                              # Kepler complete pipeline
 │   ├── train_kepler_models.py                # Train XGBoost, Random Forest, SVM
-│   ├── kepler_correlation_analysis.py        # Correlation heatmaps and analysis
-│   ├── kepler_accuracy_comparison.py         # Model comparison visualizations
 │   ├── predict_new_candidate.py              # Predict new Kepler candidates
 │   ├── kepler_processed.csv                  # Clean dataset (7,070 samples × 21 cols)
 │   ├── kepler_features.json                  # 20 selected features list
-│   ├── KEPLER_FEATURES_DICTIONARY.md         # Feature descriptions
 │   └── README_KEPLER.md                      # Detailed Kepler documentation
 │
-├── lightgbm_models/                           # LightGBM experiments (archived)
-│
 ├── feature_selection.py                       # Statistical feature selection
-├── validate_features_rf.py                    # Random Forest validation
 ├── prepare_datasets.py                        # Generate processed CSVs
+├── tess_feature_engineering.py                # TESS feature engineering (NEW!)
 ├── train_tess_models.py                       # Train TESS models
 │
 ├── kepler_selected_final.csv                  # Kepler: 20 features selected
-├── tess_selected_final.csv                    # TESS: 8 features selected
-├── tess_processed.csv                         # TESS clean dataset (6,995 × 9 cols)
+├── tess_engineered.csv                        # TESS: 74 engineered features (NEW!)
+├── tess_selected_final.csv                    # TESS: 8 features selected (old)
 │
-├── .gitignore
+├── DATA_DICTIONARY.md                         # Complete column documentation
 └── README.md                                  # This file
 ```
 
@@ -44,88 +38,37 @@ NASA/
 
 ## 🚀 Quick Start
 
-### **1. Feature Selection** (Scientific Method)
-
-Select features based on statistical correlation with target:
+### **Workflow 1: KEPLER (Production Ready)**
 
 ```bash
+# 1. Feature selection (statistical)
 python feature_selection.py
-```
 
-**Method:**
-- **Kepler**: Threshold >= 0.3 correlation
-- **TESS**: Threshold >= 0.15 correlation (lowered due to weak features)
-- **Metrics**: Spearman (continuous), Chi-Square (categorical), Mutual Information (flags)
-
-**Output:**
-- `kepler_selected_final.csv` (20 features)
-- `tess_selected_final.csv` (8 features)
-
----
-
-### **2. Prepare Datasets**
-
-Extract selected features from raw data:
-
-```bash
+# 2. Prepare clean dataset
 python prepare_datasets.py
-```
 
-**Output:**
-- `kepler_processed.csv` (7,070 samples × 21 columns)
-- `tess_processed.csv` (6,995 samples × 9 columns)
-
----
-
-### **3. Train Models**
-
-#### **Kepler (BEST RESULTS)**
-
-```bash
+# 3. Train models
 cd kepler_final
 python train_kepler_models.py
-```
 
-**Models trained:**
-- XGBoost
-- Random Forest 🏆 (Winner: 89.25% accuracy)
-- SVM
-
-**Output:**
-- `kepler_model_comparison.png`
-- `kepler_models_comparison.csv`
-
-#### **TESS**
-
-```bash
-python train_tess_models.py
-```
-
-**Models trained:**
-- XGBoost 🏆 (Winner: 69.76% accuracy)
-- Random Forest
-- SVM
-
----
-
-### **4. Predict New Candidates** (Kepler)
-
-```bash
-cd kepler_final
-python predict_new_candidate.py --input new_data.csv
-```
-
-Or demo with sample data:
-
-```bash
+# 4. Predict new candidates
 python predict_new_candidate.py --demo
 ```
 
-**Process:**
-1. Loads raw Kepler data (141 columns)
-2. Extracts ONLY the 20 selected features
-3. Preprocesses (handles NaN, scales)
-4. Predicts with Random Forest
+---
+
+### **Workflow 2: TESS (With Feature Engineering)**
+
+```bash
+# 1. Feature engineering (create quality metrics)
+python tess_feature_engineering.py
+
+# 2. Feature selection on engineered features
+# (Edit feature_selection.py to use tess_engineered.csv)
+
+# 3. Train models
+python train_tess_models.py
+```
 
 ---
 
@@ -152,14 +95,9 @@ python predict_new_candidate.py --demo
 4. `koi_dor_err2` (0.365) - Orbital distance error
 5. `koi_incl` (0.362) - Orbital inclination
 
-**Visualizations:**
-- [kepler_final/kepler_model_comparison.png](kepler_final/kepler_model_comparison.png)
-- [kepler_final/kepler_correlation_heatmaps.png](kepler_final/kepler_correlation_heatmaps.png)
-- [kepler_final/kepler_accuracy_detailed_comparison.png](kepler_final/kepler_accuracy_detailed_comparison.png)
-
 ---
 
-### **TESS** ⚠️
+### **TESS** ⚠️ (Before Feature Engineering)
 
 | Model | Test Accuracy | AUC | F1 Score | Training Time |
 |-------|---------------|-----|----------|---------------|
@@ -169,38 +107,99 @@ python predict_new_candidate.py --demo
 
 **Dataset:**
 - Total: 7,703 samples
-- Clean: 6,995 samples (90.8%)
 - Features: 8 (from 73 analyzed, threshold lowered to 0.15)
 - Classes: 6 (PC 60.7%, FP 15.5%, CP 8.9%, KP 7.6%, APC 6.0%, FA 1.3%)
 
 **Issues:**
-- Weak feature correlations (max 0.405)
+- Weak feature correlations (max 0.405 from `toi` identifier)
+- ❌ **ID leakage**: `toi` and `toipfx` are identifiers, not physical features
+- No pre-calculated disposition score like Kepler
 - Highly imbalanced classes
-- No pre-calculated score like Kepler
-- XGBoost overfitting (98.5% train, 69.8% test)
 
-**Selected Features:**
-1. `toi` (0.405) - TOI identifier
-2. `toipfx` (0.405) - TOI prefix
-3. `st_tmag` (0.299) - TESS magnitude
-4. `st_dist` (0.238) - Stellar distance
-5-8. Stellar proper motion and distance errors
+---
+
+### **TESS (After Feature Engineering)** ✅ NEW!
+
+**Created 26 new features:**
+- **SNR metrics**: `pl_trandep_snr`, `pl_orbper_snr`, `pl_rade_snr`, `pl_trandurh_snr`
+- **Physical values**: `pl_trandep_value`, `pl_rade_value`, `pl_orbper_value`, `pl_eqt_value`
+- **Derived features**: `pl_rad_ratio`, `pl_semimajor_proxy`, `pl_trandur_ratio`
+- **Quality indicators**: `measurement_completeness`, `avg_measurement_snr`
+- **Stellar ratios**: `st_brightness_norm`, `st_distance_norm`, `st_brightness_dist_product`
+
+**Top 15 Engineered Features (by Spearman correlation):**
+1. `st_tmag_value` (0.299)
+2. `st_brightness_norm` (0.299)
+3. `st_brightness_dist_product` (0.297)
+4. `st_dist_value` (0.238)
+5. `st_distance_norm` (0.238)
+6. `st_dist_quality` (0.126)
+7. `pl_trandurh_value` (0.115)
+8. `pl_semimajor_proxy` (0.109)
+9. `pl_orbper_value` (0.102)
+10. `pl_trandur_expected` (0.094)
+
+**Next Steps:**
+- Re-run `feature_selection.py` on `tess_engineered.csv`
+- Remove `toi` and `toipfx` identifiers
+- Expected improvement: More stable 60-65% accuracy without ID leakage
 
 ---
 
 ## 🔬 Methodology
 
+### **Feature Engineering (TESS Only)**
+
+**Problem:** TESS lacks pre-calculated quality scores like Kepler's `koi_score`
+
+**Solution:** Create derived metrics from raw measurements:
+
+1. **Signal-to-Noise Ratios**
+   ```python
+   pl_trandep_snr = pl_trandep / pl_trandeperr1
+   ```
+   - Higher SNR → Better measurement quality → Higher confidence
+
+2. **Orbital Physics**
+   ```python
+   pl_semimajor_proxy = (P² × M_star)^(1/3)  # Kepler's 3rd law
+   pl_trandur_expected = (P/π) × (R_star/a) × 24
+   pl_trandur_ratio = observed / expected
+   ```
+   - Consistency checks for transit physics
+
+3. **Stellar Quality Indicators**
+   ```python
+   st_dist_quality = st_disterr1 / st_dist  # Relative error
+   st_brightness_dist_product = brightness × (1/distance)
+   ```
+   - Better measurements → More reliable
+
+4. **Completeness Metrics**
+   ```python
+   measurement_completeness = count(non-null) / total_measurements
+   avg_measurement_snr = mean(all_snr_metrics)
+   ```
+   - More complete data → Higher quality candidate
+
+---
+
 ### **Feature Selection**
+
 1. Load raw NASA data (CSVs from Exoplanet Archive)
-2. Detect feature types (continuous, binary, categorical)
-3. Calculate appropriate correlation metrics:
+2. **[TESS ONLY]** Run feature engineering first
+3. Detect feature types (continuous, binary, categorical)
+4. Calculate appropriate correlation metrics:
    - **Spearman** for continuous features (non-linear, outlier-resistant)
    - **Chi-Square (Cramér's V)** for categorical features
    - **Mutual Information** for combinatorial flags
-4. Filter by correlation threshold and p-value < 0.05
-5. Save selected features
+5. Filter by correlation threshold and p-value < 0.05
+6. **Remove identifier columns** (toi, toipfx, rowid, etc.)
+
+---
 
 ### **Model Training**
+
 1. Load processed datasets (selected features only)
 2. Train-test split (80/20, stratified)
 3. Preprocessing with RobustScaler
@@ -208,70 +207,76 @@ python predict_new_candidate.py --demo
 5. Evaluate with accuracy, AUC, F1, confusion matrix
 6. Compare and select best model
 
-### **Prediction Pipeline**
-1. Load new candidate data (141 Kepler columns)
-2. Feature selector extracts 20 selected features
-3. Preprocess (handle NaN, scale)
-4. Predict with trained Random Forest
-5. Return disposition: CONFIRMED / CANDIDATE / FALSE POSITIVE
-
 ---
 
 ## 📈 Key Findings
 
-### **Kepler Success Factors:**
-✅ High-quality features (koi_score, SNR, false positive flags)
-✅ Balanced 3-class problem
-✅ Strong correlations (max 0.75)
-✅ 89.25% accuracy with Random Forest
+### **Why TESS Needs Feature Engineering:**
 
-### **TESS Challenges:**
-⚠️ No pre-calculated disposition score
-⚠️ 6 highly imbalanced classes
-⚠️ Weak feature correlations (max 0.40)
-⚠️ Limited to 8 features at threshold 0.15
-
-### **Feature Correlations:**
-- **High multicollinearity** in centroid offset features (r > 0.9)
-- **Perfect anticorrelation** in error pairs (err1 ↔ err2 = -1.0)
-- **Best discriminator**: `koi_score` (Kepler only)
+| Aspect | Kepler | TESS (Raw) | TESS (Engineered) |
+|--------|--------|------------|-------------------|
+| **Best Feature** | koi_score (0.750) | toi (0.405) ❌ ID | st_tmag (0.299) ✓ |
+| **Quality Metrics** | Pre-calculated | ❌ None | ✓ Created 26 |
+| **Feature Count** | 20 (>= 0.3) | 8 (>= 0.15) | 74 total |
+| **ID Leakage** | None | toi, toipfx | ✓ Removed |
+| **Expected Accuracy** | 89.25% | 69.76% (inflated) | ~60-65% (valid) |
 
 ---
 
-## 📝 Files Description
+### **Kepler vs TESS Comparison:**
 
-### **Scripts**
+**Kepler Advantages:**
+- ✅ Mature mission (8+ years of analysis)
+- ✅ Pre-calculated `koi_score` from Robovetter pipeline
+- ✅ Comprehensive centroid tests (8 features)
+- ✅ Balanced 3-class problem
+- ✅ Strong correlations (max 0.75)
 
-| File | Description |
-|------|-------------|
-| `feature_selection.py` | Statistical feature selection (Spearman, Chi-Square, MI) |
-| `prepare_datasets.py` | Generate processed CSVs with selected features |
-| `validate_features_rf.py` | Random Forest validation of selected features |
-| `train_tess_models.py` | Train and compare TESS models |
-| `kepler_final/train_kepler_models.py` | Train and compare Kepler models |
-| `kepler_final/kepler_correlation_analysis.py` | Correlation heatmaps and analysis |
-| `kepler_final/kepler_accuracy_comparison.py` | Detailed model comparison plots |
-| `kepler_final/predict_new_candidate.py` | Prediction pipeline for new data |
+**TESS Challenges:**
+- ⚠️ Ongoing mission (early-stage candidates)
+- ⚠️ No disposition score equivalent
+- ⚠️ No centroid offset measurements in dataset
+- ⚠️ 6 highly imbalanced classes (PC dominates at 60.7%)
+- ⚠️ Weak correlations (max 0.299 after removing IDs)
 
-### **Data Files**
+---
 
-| File | Rows | Cols | Description |
-|------|------|------|-------------|
-| `kepler_processed.csv` | 7,070 | 21 | Kepler clean dataset (20 features + target) |
-| `tess_processed.csv` | 6,995 | 9 | TESS clean dataset (8 features + target) |
-| `kepler_selected_final.csv` | 20 | 9 | Kepler selected features with metrics |
-| `tess_selected_final.csv` | 8 | 9 | TESS selected features with metrics |
-| `kepler_features.json` | - | - | List of 20 Kepler features for prediction |
+## 📝 Essential Scripts
+
+| File | Purpose | Input | Output |
+|------|---------|-------|--------|
+| `feature_selection.py` | Statistical feature selection | Raw CSVs | `*_selected_final.csv` |
+| `tess_feature_engineering.py` | Create TESS quality metrics | `TOI_*.csv` | `tess_engineered.csv` |
+| `prepare_datasets.py` | Extract selected features | Selected CSVs | `*_processed.csv` |
+| `train_tess_models.py` | Train TESS models | `tess_processed.csv` | Models + plots |
+| `kepler_final/train_kepler_models.py` | Train Kepler models | `kepler_processed.csv` | Models + plots |
+| `kepler_final/predict_new_candidate.py` | Predict new data | Raw 141-col CSV | Predictions |
+
+**Total:** 6 essential scripts (down from 9)
+
+---
+
+## 📚 Documentation
+
+- **DATA_DICTIONARY.md**: Complete column reference for Kepler & TESS
+  - Official NASA API column names
+  - Units, types, descriptions
+  - Physical interpretation
+  - Feature selection justification
+
+- **kepler_final/README_KEPLER.md**: Detailed Kepler pipeline documentation
 
 ---
 
 ## 🎯 Next Steps
 
-1. **Save trained models**: Export Random Forest as `.pkl` for deployment
-2. **TESS improvement**: Feature engineering, class balancing, lower threshold
-3. **K2 dataset**: Apply same pipeline to K2 data
-4. **Ensemble methods**: Combine Kepler models for better accuracy
-5. **API deployment**: Flask/FastAPI endpoint for predictions
+1. ✅ **TESS Feature Engineering** - COMPLETED
+2. ⏳ **Re-run feature selection** on `tess_engineered.csv` with threshold 0.20-0.25
+3. ⏳ **Remove ID features** (toi, toipfx) from selection
+4. ⏳ **Re-train TESS models** with engineered features
+5. ⏳ **Save trained models** as `.pkl` files for deployment
+6. ⏳ **Add cross-validation** for robust metrics
+7. ⏳ **K2 dataset** analysis (if needed)
 
 ---
 
