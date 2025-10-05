@@ -1,0 +1,9 @@
+feature,type,is_flag,metric_name,metric_value,p_value,is_significant,is_selected,n_samples
+toi,continuous,False,spearman,0.4049601847337635,6.617959212287925e-302,True,True,7703
+toipfx,continuous,False,spearman,0.4049580470552065,6.670978650905549e-302,True,True,7703
+st_tmag,continuous,False,spearman,0.29867858045554796,1.6783793746780268e-158,True,True,7703
+st_dist,continuous,False,spearman,0.23787425916430818,7.969446261072567e-97,True,True,7488
+st_disterr1,continuous,False,spearman,0.18353954173317386,4.693161306798404e-54,True,True,6996
+st_disterr2,continuous,False,spearman,0.18353954173317386,4.693161306798404e-54,True,True,6996
+st_pmdecerr2,continuous,False,spearman,0.17032165534345733,2.2763099805676904e-50,True,True,7569
+st_pmdecerr1,continuous,False,spearman,0.17032165534345733,2.2763099805676904e-50,True,True,7569
