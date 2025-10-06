@@ -1,12 +1,6 @@
 """
 Script 2: Intelligent Feature Analysis for Kepler
 Analyzes all columns and identifies which are useful for classification
-
-RULES:
-1. NO error columns (ra_err, dec_err, etc.) - don't contribute to classification
-2. NO score columns if they directly indicate the answer (>75 = confirmed)
-3. Focus on physical properties of the planetary system
-4. Identify correlation types (linear, non-linear, categorical)
 """
 import pandas as pd
 import numpy as np
