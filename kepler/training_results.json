@@ -1,0 +1,70 @@
+{
+  "best_model": "Gradient Boosting",
+  "model_results": {
+    "Logistic Regression": {
+      "train_accuracy": 0.8878577963664881,
+      "test_accuracy": 0.9001568217459488,
+      "cv_mean": 0.883545450585827,
+      "cv_std": 0.0044140661126206154,
+      "overfit_gap": -0.012299025379460704
+    },
+    "Random Forest": {
+      "train_accuracy": 0.9657561103123775,
+      "test_accuracy": 0.9404077365394669,
+      "cv_mean": 0.932297266482707,
+      "cv_std": 0.004540955770980601,
+      "overfit_gap": 0.02534837377291066
+    },
+    "Gradient Boosting": {
+      "train_accuracy": 0.9619657561103124,
+      "test_accuracy": 0.9456351280710925,
+      "cv_mean": 0.9339961004655358,
+      "cv_std": 0.003013685898132119,
+      "overfit_gap": 0.01633062803921992
+    }
+  },
+  "classification_report": {
+    "Not Exoplanet": {
+      "precision": 0.9639175257731959,
+      "recall": 0.9596774193548387,
+      "f1-score": 0.9617927994121969,
+      "support": 1364.0
+    },
+    "Exoplanet": {
+      "precision": 0.9009009009009009,
+      "recall": 0.9107468123861566,
+      "f1-score": 0.9057971014492754,
+      "support": 549.0
+    },
+    "accuracy": 0.9456351280710925,
+    "macro avg": {
+      "precision": 0.9324092133370484,
+      "recall": 0.9352121158704977,
+      "f1-score": 0.9337949504307361,
+      "support": 1913.0
+    },
+    "weighted avg": {
+      "precision": 0.945832775613818,
+      "recall": 0.9456351280710925,
+      "f1-score": 0.9457229415022942,
+      "support": 1913.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      1309,
+      55
+    ],
+    [
+      49,
+      500
+    ]
+  ],
+  "dataset_info": {
+    "total_samples": 9564,
+    "train_samples": 7651,
+    "test_samples": 1913,
+    "num_features": 52,
+    "positive_rate": 0.28711836051861145
+  }
+}

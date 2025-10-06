@@ -1,0 +1,440 @@
+{
+  "excluded_features": {
+    "error_columns": [
+      "ra_err",
+      "dec_err",
+      "koi_gmag_err",
+      "koi_rmag_err",
+      "koi_imag_err",
+      "koi_zmag_err",
+      "koi_jmag_err",
+      "koi_hmag_err",
+      "koi_kmag_err",
+      "koi_kepmag_err",
+      "koi_time0bk_err1",
+      "koi_time0bk_err2",
+      "koi_eccen_err1",
+      "koi_eccen_err2",
+      "koi_longp_err1",
+      "koi_longp_err2",
+      "koi_prad_err1",
+      "koi_prad_err2",
+      "koi_sma_err1",
+      "koi_sma_err2",
+      "koi_impact_err1",
+      "koi_impact_err2",
+      "koi_duration_err1",
+      "koi_duration_err2",
+      "koi_ingress_err1",
+      "koi_ingress_err2",
+      "koi_depth_err1",
+      "koi_depth_err2",
+      "koi_period_err1",
+      "koi_period_err2",
+      "koi_ror_err1",
+      "koi_ror_err2",
+      "koi_dor_err1",
+      "koi_dor_err2",
+      "koi_incl_err1",
+      "koi_incl_err2",
+      "koi_teq_err1",
+      "koi_teq_err2",
+      "koi_steff_err1",
+      "koi_steff_err2",
+      "koi_slogg_err1",
+      "koi_slogg_err2",
+      "koi_smet_err1",
+      "koi_smet_err2",
+      "koi_srad_err1",
+      "koi_srad_err2",
+      "koi_smass_err1",
+      "koi_smass_err2",
+      "koi_sage_err1",
+      "koi_sage_err2",
+      "koi_fwm_sra_err",
+      "koi_fwm_sdec_err",
+      "koi_fwm_srao_err",
+      "koi_fwm_sdeco_err",
+      "koi_fwm_prao_err",
+      "koi_fwm_pdeco_err",
+      "koi_dicco_mra_err",
+      "koi_dicco_mdec_err",
+      "koi_dicco_msky_err",
+      "koi_dikco_mra_err",
+      "koi_dikco_mdec_err",
+      "koi_dikco_msky_err",
+      "koi_time0_err1",
+      "koi_time0_err2",
+      "koi_insol_err1",
+      "koi_insol_err2",
+      "koi_srho_err1",
+      "koi_srho_err2"
+    ],
+    "score_columns": [
+      "koi_pdisposition",
+      "koi_score"
+    ],
+    "identifier_columns": [
+      "kepid",
+      "kepoi_name",
+      "kepler_name",
+      "ra_str",
+      "dec_str"
+    ],
+    "target_columns": [
+      "koi_disposition",
+      "is_exoplanet"
+    ],
+    "high_nulls": [
+      [
+        "koi_model_dof",
+        "100.0%"
+      ],
+      [
+        "koi_model_chisq",
+        "100.0%"
+      ],
+      [
+        "koi_longp",
+        "100.0%"
+      ],
+      [
+        "koi_ingress",
+        "100.0%"
+      ],
+      [
+        "koi_sage",
+        "100.0%"
+      ]
+    ]
+  },
+  "potential_features": {
+    "orbital_properties": [
+      "koi_time0bk",
+      "koi_eccen",
+      "koi_prad",
+      "koi_sma",
+      "koi_period",
+      "koi_incl",
+      "koi_time0"
+    ],
+    "transit_properties": [
+      "koi_impact",
+      "koi_duration",
+      "koi_depth",
+      "koi_ror"
+    ],
+    "stellar_properties": [
+      "koi_steff",
+      "koi_slogg",
+      "koi_srad",
+      "koi_smass"
+    ],
+    "photometric_properties": [
+      "koi_gmag",
+      "koi_rmag",
+      "koi_imag",
+      "koi_zmag",
+      "koi_jmag",
+      "koi_hmag",
+      "koi_kmag",
+      "koi_kepmag"
+    ],
+    "ratios_and_derived": [
+      "ra",
+      "dec",
+      "koi_delivname",
+      "koi_vet_stat",
+      "koi_quarters",
+      "koi_count",
+      "koi_num_transits",
+      "koi_max_sngle_ev",
+      "koi_max_mult_ev",
+      "koi_bin_oedp_sig",
+      "koi_limbdark_mod",
+      "koi_ldm_coeff4",
+      "koi_ldm_coeff3",
+      "koi_ldm_coeff2",
+      "koi_ldm_coeff1",
+      "koi_trans_mod",
+      "koi_model_snr",
+      "koi_dor",
+      "koi_teq",
+      "koi_smet",
+      "koi_sparprov",
+      "koi_fwm_stat_sig",
+      "koi_fwm_sra",
+      "koi_fwm_sdec",
+      "koi_fwm_srao",
+      "koi_fwm_sdeco",
+      "koi_fwm_prao",
+      "koi_fwm_pdeco",
+      "koi_dicco_mra",
+      "koi_dicco_mdec",
+      "koi_dicco_msky",
+      "koi_dikco_mra",
+      "koi_dikco_mdec",
+      "koi_dikco_msky",
+      "koi_comment",
+      "koi_vet_date",
+      "koi_tce_plnt_num",
+      "koi_tce_delivname",
+      "koi_datalink_dvs",
+      "koi_disp_prov",
+      "koi_parm_prov",
+      "koi_datalink_dvr",
+      "koi_fpflag_nt",
+      "koi_fpflag_ss",
+      "koi_fpflag_co",
+      "koi_fpflag_ec",
+      "koi_insol",
+      "koi_srho",
+      "koi_fittype"
+    ]
+  },
+  "correlations": {
+    "koi_eccen": {
+      "pearson": NaN,
+      "spearman": NaN,
+      "pointbiserial": NaN,
+      "null_pct": 3.795483061480552,
+      "mean_exoplanet": 0.0,
+      "mean_not_exoplanet": 0.0
+    },
+    "koi_count": {
+      "pearson": 0.42881538326167384,
+      "spearman": 0.4523556034529727,
+      "pointbiserial": 0.42881538326167384,
+      "null_pct": 0.0,
+      "mean_exoplanet": 1.9963583394027677,
+      "mean_not_exoplanet": 1.1686711645643884
+    },
+    "koi_ldm_coeff4": {
+      "pearson": NaN,
+      "spearman": NaN,
+      "pointbiserial": NaN,
+      "null_pct": 3.795483061480552,
+      "mean_exoplanet": 0.0,
+      "mean_not_exoplanet": 0.0
+    },
+    "koi_ldm_coeff3": {
+      "pearson": NaN,
+      "spearman": NaN,
+      "pointbiserial": NaN,
+      "null_pct": 3.795483061480552,
+      "mean_exoplanet": 0.0,
+      "mean_not_exoplanet": 0.0
+    },
+    "koi_dicco_msky": {
+      "pearson": 0.3162837429902713,
+      "spearman": 0.3640314431854605,
+      "pointbiserial": 0.3162837429902713,
+      "null_pct": 6.263069845253032,
+      "mean_exoplanet": 0.43919648737650935,
+      "mean_not_exoplanet": 2.4925218228498074
+    },
+    "koi_dikco_msky": {
+      "pearson": 0.3015174887586136,
+      "spearman": 0.34254724117922447,
+      "pointbiserial": 0.30151748875861356,
+      "null_pct": 5.959849435382685,
+      "mean_exoplanet": 0.450473126142596,
+      "mean_not_exoplanet": 2.4077605048729827
+    },
+    "koi_fpflag_ss": {
+      "pearson": 0.341882257709686,
+      "spearman": 0.3418822577096861,
+      "pointbiserial": 0.34188225770968605,
+      "null_pct": 0.0,
+      "mean_exoplanet": 0.005098324836125273,
+      "mean_not_exoplanet": 0.324435318275154
+    },
+    "koi_fpflag_co": {
+      "pearson": 0.3148462716897415,
+      "spearman": 0.3148462716897415,
+      "pointbiserial": 0.3148462716897415,
+      "null_pct": 0.0,
+      "mean_exoplanet": 0.0,
+      "mean_not_exoplanet": 0.27706072161924317
+    },
+    "koi_smet": {
+      "pearson": 0.2702347370444436,
+      "spearman": 0.2990885410597714,
+      "pointbiserial": 0.2702347370444436,
+      "null_pct": 4.035968214136345,
+      "mean_exoplanet": -0.0077004373177842565,
+      "mean_not_exoplanet": -0.17421510724277278
+    },
+    "koi_fwm_stat_sig": {
+      "pearson": 0.1541202145136525,
+      "spearman": 0.2760664532343316,
+      "pointbiserial": 0.15412021451365251,
+      "null_pct": 11.25052279381012,
+      "mean_exoplanet": 0.20939241960183766,
+      "mean_not_exoplanet": 0.12503420694349898
+    },
+    "koi_fpflag_nt": {
+      "pearson": 0.005080872480470802,
+      "spearman": 0.27443337414210955,
+      "pointbiserial": 0.005080872480470802,
+      "null_pct": 0.0,
+      "mean_exoplanet": 0.1704297159504734,
+      "mean_not_exoplanet": 0.22396597242593136
+    },
+    "koi_fpflag_ec": {
+      "pearson": 0.2343904153561878,
+      "spearman": 0.23439041535618788,
+      "pointbiserial": 0.23439041535618782,
+      "null_pct": 0.0,
+      "mean_exoplanet": 0.0,
+      "mean_not_exoplanet": 0.16837782340862423
+    },
+    "koi_incl": {
+      "pearson": 0.2318106067680867,
+      "spearman": 0.18157892573779513,
+      "pointbiserial": 0.2318106067680867,
+      "null_pct": 3.805938937682978,
+      "mean_exoplanet": 87.8818913994169,
+      "mean_not_exoplanet": 80.16856257744735
+    },
+    "koi_num_transits": {
+      "pearson": 0.23022465912310178,
+      "spearman": 0.1285664304961804,
+      "pointbiserial": 0.23022465912310178,
+      "null_pct": 11.94061062317022,
+      "mean_exoplanet": 203.7871250914411,
+      "mean_not_exoplanet": 472.1119901547117
+    },
+    "koi_tce_plnt_num": {
+      "pearson": 0.18211667288389777,
+      "spearman": 0.22664592067333003,
+      "pointbiserial": 0.18211667288389777,
+      "null_pct": 3.617733166039314,
+      "mean_exoplanet": 1.429981718464351,
+      "mean_not_exoplanet": 1.1650470461206233
+    },
+    "koi_ldm_coeff1": {
+      "pearson": 0.1850425084253996,
+      "spearman": 0.21887128732590472,
+      "pointbiserial": 0.18504250842539957,
+      "null_pct": 3.795483061480552,
+      "mean_exoplanet": 0.43772485422740526,
+      "mean_not_exoplanet": 0.39482155799907076
+    },
+    "koi_teq": {
+      "pearson": 0.1932705281516356,
+      "spearman": 0.14668018511126732,
+      "pointbiserial": 0.19327052815163553,
+      "null_pct": 3.795483061480552,
+      "mean_exoplanet": 831.5123906705539,
+      "mean_not_exoplanet": 1193.2731918847762
+    },
+    "koi_impact": {
+      "pearson": 0.057262056792361515,
+      "spearman": 0.19159903843708526,
+      "pointbiserial": 0.057262056792361515,
+      "null_pct": 3.795483061480552,
+      "mean_exoplanet": 0.44096144314868807,
+      "mean_not_exoplanet": 0.8601064426204119
+    },
+    "koi_ldm_coeff2": {
+      "pearson": 0.13709543594140974,
+      "spearman": 0.1869194884730959,
+      "pointbiserial": 0.13709543594140974,
+      "null_pct": 3.795483061480552,
+      "mean_exoplanet": 0.24081093294460643,
+      "mean_not_exoplanet": 0.26023060244695684
+    },
+    "koi_steff": {
+      "pearson": 0.1851829624904596,
+      "spearman": 0.18636694901318063,
+      "pointbiserial": 0.1851829624904596,
+      "null_pct": 3.795483061480552,
+      "mean_exoplanet": 5480.472667638484,
+      "mean_not_exoplanet": 5803.0144029735175
+    },
+    "koi_depth": {
+      "pearson": 0.18025377590129912,
+      "spearman": 0.017851376184573407,
+      "pointbiserial": 0.18025377590129912,
+      "null_pct": 3.795483061480552,
+      "mean_exoplanet": 1051.819023323615,
+      "mean_not_exoplanet": 33454.84971348924
+    },
+    "koi_smass": {
+      "pearson": 0.16418504768762635,
+      "spearman": 0.13835397262308227,
+      "pointbiserial": 0.16418504768762635,
+      "null_pct": 3.795483061480552,
+      "mean_exoplanet": 0.9356997084548107,
+      "mean_not_exoplanet": 1.061105776676475
+    },
+    "koi_prad": {
+      "pearson": 0.021190049120642068,
+      "spearman": 0.16009943022025075,
+      "pointbiserial": 0.021190049120642068,
+      "null_pct": 3.795483061480552,
+      "mean_exoplanet": 2.8573724489795915,
+      "mean_not_exoplanet": 145.40291466625365
+    },
+    "koi_max_mult_ev": {
+      "pearson": 0.15896178780733783,
+      "spearman": 0.12371459601416906,
+      "pointbiserial": 0.15896178780733783,
+      "null_pct": 11.94061062317022,
+      "mean_exoplanet": 73.24863483156548,
+      "mean_not_exoplanet": 1483.45395585981
+    },
+    "koi_slogg": {
+      "pearson": 0.15617623805076225,
+      "spearman": 0.10894808734279018,
+      "pointbiserial": 0.15617623805076222,
+      "null_pct": 3.795483061480552,
+      "mean_exoplanet": 4.413791909620991,
+      "mean_not_exoplanet": 4.2661152237881375
+    },
+    "koi_insol": {
+      "pearson": 0.030281797214845523,
+      "spearman": 0.149018445464428,
+      "pointbiserial": 0.03028179721484552,
+      "null_pct": 3.35633626097867,
+      "mean_exoplanet": 328.6628633879782,
+      "mean_not_exoplanet": 10878.988571868269
+    },
+    "koi_model_snr": {
+      "pearson": 0.14852118652290214,
+      "spearman": 0.13231556414948295,
+      "pointbiserial": 0.14852118652290214,
+      "null_pct": 3.795483061480552,
+      "mean_exoplanet": 78.59588192419824,
+      "mean_not_exoplanet": 336.9408084249651
+    },
+    "koi_max_sngle_ev": {
+      "pearson": 0.14824542184594955,
+      "spearman": 0.04403448960502633,
+      "pointbiserial": 0.14824542184594955,
+      "null_pct": 11.94061062317022,
+      "mean_exoplanet": 12.01637146975128,
+      "mean_not_exoplanet": 256.0732583549402
+    },
+    "koi_fwm_sra": {
+      "pearson": 0.1359395336974089,
+      "spearman": 0.1343719387783704,
+      "pointbiserial": 0.1359395336974089,
+      "null_pct": 5.290673358427436,
+      "mean_exoplanet": 19.405374201397585,
+      "mean_not_exoplanet": 19.499881309276724
+    },
+    "koi_duration": {
+      "pearson": 0.1349171129712807,
+      "spearman": 0.08284272294636875,
+      "pointbiserial": 0.13491711297128073,
+      "null_pct": 0.0,
+      "mean_exoplanet": 4.24588298252003,
+      "mean_not_exoplanet": 6.175689184511587
+    }
+  },
+  "total_features_analyzed": 154,
+  "features_kept": 72,
+  "features_excluded": 82
+}

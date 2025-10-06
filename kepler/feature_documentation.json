@@ -1,0 +1,120 @@
+{
+  "base_features": [
+    "koi_period",
+    "koi_sma",
+    "koi_eccen",
+    "koi_incl",
+    "koi_prad",
+    "koi_duration",
+    "koi_depth",
+    "koi_ror",
+    "koi_impact",
+    "koi_steff",
+    "koi_slogg",
+    "koi_srad",
+    "koi_smass",
+    "koi_smet",
+    "koi_kepmag",
+    "koi_gmag",
+    "koi_rmag",
+    "koi_imag",
+    "koi_jmag",
+    "koi_hmag",
+    "koi_kmag",
+    "koi_teq",
+    "koi_insol",
+    "koi_dor",
+    "koi_model_snr",
+    "koi_count",
+    "koi_num_transits",
+    "koi_fpflag_nt",
+    "koi_fpflag_ss",
+    "koi_fpflag_co",
+    "koi_fpflag_ec",
+    "ra",
+    "dec"
+  ],
+  "engineered_features": {
+    "planet_star_radius_ratio": {
+      "formula": "koi_prad / (koi_srad * 109.1)",
+      "reasoning": "Ratio of planet to star size. True planets have specific size ratios; large ratios may indicate stellar companion"
+    },
+    "planet_density_proxy": {
+      "formula": "koi_smass / (koi_prad^3)",
+      "reasoning": "Density proxy. Rocky planets have higher density than gas giants; helps distinguish planet types"
+    },
+    "insol_teq_ratio": {
+      "formula": "koi_insol / (koi_teq^4)",
+      "reasoning": "Stefan-Boltzmann relationship. Inconsistencies may indicate false positives"
+    },
+    "orbital_velocity": {
+      "formula": "(2pi * koi_sma) / koi_period",
+      "reasoning": "Orbital velocity. Unusually high values may indicate unstable orbits or measurement errors"
+    },
+    "hill_sphere_approx": {
+      "formula": "koi_sma * (1 / (3 * koi_smass))^(1/3)",
+      "reasoning": "Hill sphere approximation. Indicates orbital stability region"
+    },
+    "periapsis_distance": {
+      "formula": "koi_sma * (1 - koi_eccen)",
+      "reasoning": "Closest approach to star. Affects temperature and tidal forces"
+    },
+    "apoapsis_distance": {
+      "formula": "koi_sma * (1 + koi_eccen)",
+      "reasoning": "Farthest distance from star. Extreme orbits may indicate false positives"
+    },
+    "depth_consistency": {
+      "formula": "abs(koi_depth - (koi_ror^2 * 1e6)) / (koi_ror^2 * 1e6)",
+      "reasoning": "Transit depth should equal (Rp/Rs)^2. Large deviations indicate problems"
+    },
+    "duration_impact_relation": {
+      "formula": "koi_duration * (1 + koi_impact^2)",
+      "reasoning": "Duration depends on impact parameter. Helps identify grazing transits"
+    },
+    "transit_snr": {
+      "formula": "koi_depth * sqrt(koi_num_transits)",
+      "reasoning": "SNR improves with sqrt(N) transits. Higher SNR = more confident detection"
+    },
+    "stellar_density": {
+      "formula": "10^koi_slogg / (koi_srad^2)",
+      "reasoning": "Stellar density from surface gravity. Helps identify stellar type"
+    },
+    "main_sequence_deviation": {
+      "formula": "abs(koi_steff - (5778 * koi_smass^0.5)) / (5778 * koi_smass^0.5)",
+      "reasoning": "Deviation from main sequence. Large deviations may indicate evolved stars"
+    },
+    "metallicity_temp": {
+      "formula": "koi_smet * (koi_steff / 5778)",
+      "reasoning": "Metal-rich stars (high metallicity) more likely to have planets"
+    },
+    "g_r_color": {
+      "formula": "koi_gmag - koi_rmag",
+      "reasoning": "g-r color index. Indicates star temperature/type"
+    },
+    "r_i_color": {
+      "formula": "koi_rmag - koi_imag",
+      "reasoning": "r-i color index. Another temperature indicator"
+    },
+    "j_k_color": {
+      "formula": "koi_jmag - koi_kmag",
+      "reasoning": "J-K color. Less affected by extinction than optical colors"
+    },
+    "is_multiplanet_system": {
+      "formula": "koi_count > 1",
+      "reasoning": "Multi-planet systems more likely to be real (planets rarely come alone)"
+    },
+    "total_fp_flags": {
+      "formula": "sum of all false positive flags",
+      "reasoning": "More FP flags = higher chance of being false positive"
+    },
+    "snr_per_transit": {
+      "formula": "koi_model_snr / sqrt(koi_num_transits)",
+      "reasoning": "SNR normalized by number of transits. Indicates signal strength"
+    }
+  },
+  "total_features": 52,
+  "dataset_shape": [
+    9564,
+    53
+  ]
+}

@@ -1,293 +1,310 @@
-# Exoplanet Classifier - Machine Learning Pipeline
+# NASA Exoplanet Classification Project
 
-Complete machine learning pipeline for exoplanet classification using Kepler and TESS mission data.
+Intelligent machine learning pipeline for classifying Kepler exoplanet candidates using **smart feature engineering** and rigorous validation.
 
-**Goal:** Classify exoplanets as **CONFIRMED**, **CANDIDATE**, or **FALSE POSITIVE** using scientifically selected features and ensemble models.
+## 🎯 Project Philosophy
+
+This project follows a **quality over quantity** approach:
+- ✅ **No error columns** (measurement uncertainty doesn't help classification)
+- ✅ **No score/disposition leakage** (would give away the answer)
+- ✅ **Every feature has a physical/astronomical reason**
+- ✅ **Rigorous validation** (no 100% accuracy = no data leakage)
+
+## 📊 Results Summary
+
+### Best Model: Gradient Boosting
+- **Test Accuracy**: 94.56%
+- **Precision (Exoplanet)**: 90%
+- **Recall (Exoplanet)**: 91%
+- **Overfitting Gap**: 1.63% ✅ (well controlled)
+
+### Model Comparison
+
+| Model | Train Acc | Test Acc | CV Acc | Overfit Gap |
+|-------|-----------|----------|--------|-------------|
+| **Gradient Boosting** | 96.20% | **94.56%** | 93.40% | 1.63% |
+| Random Forest | 96.58% | 94.04% | 93.23% | 2.53% |
+| Logistic Regression | 88.79% | 90.02% | 88.35% | -1.23% |
+
+## 🔬 Feature Engineering Strategy
+
+**Total: 52 features (33 base + 19 engineered)**
+
+All 52 features were used together to train the models and achieve 94.56% accuracy.
+
+### Base Features (33)
+
+Selected from 153 original columns, excluding:
+- **68 error columns** (ra_err, dec_err, etc.) - Don't contribute to classification
+- **2 score columns** (koi_score, koi_pdisposition) - Would leak information
+- **5 high-null columns** (>50% missing data)
+- **5 identifier columns** (kepid, names, etc.) - Not physical properties
+
+#### Orbital Properties (7)
+1. **koi_period** - Orbital period in days
+2. **koi_time0bk** - Transit time (BJD - 2,454,833.0)
+3. **koi_time0** - Transit epoch (BJD - 2,454,833.0)
+4. **koi_eccen** - Orbital eccentricity
+5. **koi_prad** - Planetary radius (Earth radii)
+6. **koi_sma** - Semi-major axis (AU)
+7. **koi_incl** - Orbital inclination (degrees)
+
+#### Transit Properties (4)
+8. **koi_duration** - Transit duration (hours)
+9. **koi_depth** - Transit depth (ppm)
+10. **koi_ror** - Planet-star radius ratio
+11. **koi_impact** - Impact parameter
+
+#### Stellar Properties (4)
+12. **koi_steff** - Stellar effective temperature (K)
+13. **koi_slogg** - Stellar surface gravity (log10(cm/s²))
+14. **koi_srad** - Stellar radius (Solar radii)
+15. **koi_smass** - Stellar mass (Solar masses)
+
+#### Photometric Properties (8)
+16. **koi_kepmag** - Kepler magnitude
+17. **koi_gmag** - g-band magnitude
+18. **koi_rmag** - r-band magnitude
+19. **koi_imag** - i-band magnitude
+20. **koi_zmag** - z-band magnitude
+21. **koi_jmag** - J-band magnitude (2MASS)
+22. **koi_hmag** - H-band magnitude (2MASS)
+23. **koi_kmag** - K-band magnitude (2MASS)
+
+#### Derived/Calculated Properties (6)
+24. **koi_teq** - Equilibrium temperature (K)
+25. **koi_insol** - Insolation flux (Earth flux)
+26. **koi_dor** - Planet-star distance over stellar radius
+27. **koi_model_snr** - Transit signal-to-noise ratio
+28. **koi_smet** - Stellar metallicity [Fe/H]
+
+#### Detection/Count Features (2)
+29. **koi_count** - Number of planet candidates in system
+30. **koi_num_transits** - Number of transits observed
+
+#### False Positive Flags (4)
+31. **koi_fpflag_nt** - Not transit-like flag
+32. **koi_fpflag_ss** - Stellar eclipse flag
+33. **koi_fpflag_co** - Centroid offset flag
+34. **koi_fpflag_ec** - Ephemeris match flag
+
+#### Sky Coordinates (2)
+35. **ra** - Right Ascension (degrees)
+36. **dec** - Declination (degrees)
 
 ---
+
+### Engineered Features (19)
+
+Created from base features using physical/astronomical principles:
+
+#### A. Planet-Star Relationship (3 features)
+1. **planet_star_radius_ratio**: `koi_prad / (koi_srad * 109.1)`
+   - *Why*: True planets have specific size ratios; large ratios may indicate stellar companion
+
+2. **planet_density_proxy**: `koi_smass / (koi_prad^3)`
+   - *Why*: Rocky planets have higher density than gas giants
+
+3. **insol_teq_ratio**: `koi_insol / (koi_teq^4)`
+   - *Why*: Stefan-Boltzmann consistency check; inconsistencies indicate false positives
+
+#### B. Orbital Dynamics (4 features)
+4. **orbital_velocity**: `(2π * koi_sma) / koi_period`
+   - *Why*: Unusually high values indicate unstable orbits
+
+5. **hill_sphere_approx**: `koi_sma * (1 / (3 * koi_smass))^(1/3)`
+   - *Why*: Orbital stability indicator
+
+6. **periapsis_distance**: `koi_sma * (1 - koi_eccen)`
+   - *Why*: Closest approach affects temperature and tidal forces
+
+7. **apoapsis_distance**: `koi_sma * (1 + koi_eccen)`
+   - *Why*: Extreme orbits may indicate false positives
+
+#### C. Transit Geometry (3 features)
+8. **depth_consistency**: `abs(koi_depth - (koi_ror^2 * 1e6)) / (koi_ror^2 * 1e6)`
+   - *Why*: Transit depth should equal (Rp/Rs)²; large deviations indicate problems
+
+9. **duration_impact_relation**: `koi_duration * (1 + koi_impact^2)`
+   - *Why*: Helps identify grazing transits
+
+10. **transit_snr**: `koi_depth * sqrt(koi_num_transits)`
+    - *Why*: SNR improves with √N transits; higher SNR = more confident detection
+
+#### D. Stellar Properties (3 features)
+11. **stellar_density**: `10^koi_slogg / (koi_srad^2)`
+    - *Why*: Helps identify stellar type
+
+12. **main_sequence_deviation**: `abs(koi_steff - (5778 * koi_smass^0.5)) / (5778 * koi_smass^0.5)`
+    - *Why*: Large deviations may indicate evolved stars
+
+13. **metallicity_temp**: `koi_smet * (koi_steff / 5778)`
+    - *Why*: Metal-rich stars more likely to have planets
+
+#### E. Color & Photometry (3 features)
+14. **g_r_color**: `koi_gmag - koi_rmag`
+    - *Why*: Indicates star temperature/type
+
+15. **r_i_color**: `koi_rmag - koi_imag`
+    - *Why*: Another temperature indicator
+
+16. **j_k_color**: `koi_jmag - koi_kmag`
+    - *Why*: Less affected by extinction than optical colors
+
+#### F. Statistical/Detection (3 features)
+17. **is_multiplanet_system**: `koi_count > 1`
+    - *Why*: Multi-planet systems more likely to be real
+
+18. **total_fp_flags**: Sum of all false positive flags
+    - *Why*: More FP flags = higher chance of being false positive
+
+19. **snr_per_transit**: `koi_model_snr / sqrt(koi_num_transits)`
+    - *Why*: Indicates per-transit signal strength
+
+### Top 10 Most Important Features
+
+| Rank | Feature | Importance | Category |
+|------|---------|------------|----------|
+| 1 | total_fp_flags | 46.12% | Detection |
+| 2 | koi_model_snr | 31.07% | Base |
+| 3 | metallicity_temp | 2.83% | Stellar |
+| 4 | koi_period | 2.65% | Orbital |
+| 5 | planet_density_proxy | 2.41% | Planet-Star |
+| 6 | depth_consistency | 1.52% | Transit |
+| 7 | is_multiplanet_system | 1.41% | Detection |
+| 8 | snr_per_transit | 1.25% | Detection |
+| 9 | koi_count | 1.22% | Base |
+| 10 | koi_impact | 0.91% | Transit |
 
 ## 📁 Project Structure
 
 ```
 NASA/
-├── Datasets/
-│   ├── cumulative_2025.10.04_08.50.10.csv    # Kepler (9,564 exoplanets, 141 features)
-│   └── TOI_2025.10.04_08.50.19.csv           # TESS (7,703 exoplanets, 87 features)
+├── kepler/                              # Kepler pipeline
+│   ├── 1_download_data.py              # Download dataset from NASA
+│   ├── 2_analyze_features.py           # Intelligent feature analysis
+│   ├── 3_feature_engineering_smart.py  # Smart feature engineering
+│   ├── 4_train_and_validate.py         # Model training & validation
+│   ├── kepler_raw.csv                  # Raw dataset (9,564 samples)
+│   ├── kepler_engineered.csv           # Engineered dataset (52 features)
+│   ├── feature_analysis.json           # Feature analysis results
+│   ├── feature_documentation.json      # Feature reasoning docs
+│   ├── model_comparison.csv            # Model performance comparison
+│   ├── training_results.json           # Detailed training results
+│   └── feature_importance.png          # Feature importance plot
 │
-├── kepler_final/                              # Kepler complete pipeline
-│   ├── train_kepler_models.py                # Train XGBoost, Random Forest, SVM
-│   ├── predict_new_candidate.py              # Predict new Kepler candidates
-│   ├── kepler_processed.csv                  # Clean dataset (7,070 samples × 21 cols)
-│   ├── kepler_features.json                  # 20 selected features list
-│   └── README_KEPLER.md                      # Detailed Kepler documentation
+├── projectonasa/                        # Frontend application
+│   ├── app.js                          # Express server
+│   ├── views/                          # EJS templates
+│   ├── public/                         # Static files
+│   └── package.json                    # Dependencies
 │
-├── feature_selection.py                       # Statistical feature selection
-├── prepare_datasets.py                        # Generate processed CSVs
-├── tess_feature_engineering.py                # TESS feature engineering (NEW!)
-├── train_tess_models.py                       # Train TESS models
-│
-├── kepler_selected_final.csv                  # Kepler: 20 features selected
-├── tess_engineered.csv                        # TESS: 74 engineered features (NEW!)
-├── tess_selected_final.csv                    # TESS: 8 features selected (old)
-│
-├── DATA_DICTIONARY.md                         # Complete column documentation
-└── README.md                                  # This file
+├── .gitignore                          # Git ignore rules
+└── README.md                           # This file
 ```
-
----
 
 ## 🚀 Quick Start
 
-### **Workflow 1: KEPLER (Production Ready)**
+### 1. Frontend Setup
 
 ```bash
-# 1. Feature selection (statistical)
-python feature_selection.py
-
-# 2. Prepare clean dataset
-python prepare_datasets.py
-
-# 3. Train models
-cd kepler_final
-python train_kepler_models.py
-
-# 4. Predict new candidates
-python predict_new_candidate.py --demo
+cd projectonasa
+npm install
+npm start
 ```
 
----
+Frontend will be available at `http://localhost:3000`
 
-### **Workflow 2: TESS (With Feature Engineering)**
+### 2. Run Kepler Pipeline
 
 ```bash
-# 1. Feature engineering (create quality metrics)
-python tess_feature_engineering.py
+# Download data
+python kepler/1_download_data.py
 
-# 2. Feature selection on engineered features
-# (Edit feature_selection.py to use tess_engineered.csv)
+# Analyze features
+python kepler/2_analyze_features.py
 
-# 3. Train models
-python train_tess_models.py
+# Engineer features
+python kepler/3_feature_engineering_smart.py
+
+# Train and validate
+python kepler/4_train_and_validate.py
 ```
 
----
+## 🔍 Validation & Quality Checks
 
-## 📊 Results Summary
+### ✅ No Data Leakage
+- Train accuracy: 96.20% (NOT 100%)
+- Test accuracy: 94.56%
+- If train = 100%, something is wrong!
 
-### **KEPLER** 🏆
+### ✅ Controlled Overfitting
+- Overfit gap: 1.63% (< 15% threshold)
+- Cross-validation confirms: 93.40% ± 0.30%
 
-| Model | Test Accuracy | AUC | F1 Score | Training Time |
-|-------|---------------|-----|----------|---------------|
-| **Random Forest** | **89.25%** | **97.24%** | **89.04%** | **0.49s** |
-| XGBoost | 88.61% | 97.18% | 88.49% | 0.90s |
-| SVM | 80.27% | 93.57% | 78.66% | 3.84s |
+### ✅ Appropriate Correlations
+- Used Pearson (linear), Spearman (monotonic), and Point-Biserial (binary target)
+- Different features require different correlation methods
 
-**Dataset:**
-- Total: 9,564 samples
-- Clean: 7,070 samples (73.9% after removing NaN)
-- Features: 20 (from 122 analyzed)
-- Classes: CONFIRMED (28.7%), CANDIDATE (20.7%), FALSE POSITIVE (50.6%)
+### ✅ No "Baboso" Features
+- Every feature has clear physical/astronomical reasoning
+- No random combinations or "kitchen sink" approach
 
-**Top 5 Features:**
-1. `koi_score` (0.750 Spearman) - Disposition confidence
-2. `koi_fwm_stat_sig` (0.451) - Centroid shift statistic
-3. `koi_srho_err2` (0.377) - Stellar density error
-4. `koi_dor_err2` (0.365) - Orbital distance error
-5. `koi_incl` (0.362) - Orbital inclination
+## 📈 Performance Metrics
 
----
+### Confusion Matrix
+```
+                Predicted
+              Not  Exoplanet
+Actual Not    1309   55
+Actual Exo    49     500
+```
 
-### **TESS** ⚠️ (Before Feature Engineering)
+- **True Positives**: 500 exoplanets correctly identified
+- **False Positives**: 55 non-exoplanets misclassified
+- **False Negatives**: 49 exoplanets missed
+- **True Negatives**: 1309 non-exoplanets correctly identified
 
-| Model | Test Accuracy | AUC | F1 Score | Training Time |
-|-------|---------------|-----|----------|---------------|
-| **XGBoost** | **69.76%** | **81.28%** | **66.70%** | **1.36s** |
-| Random Forest | 69.48% | 81.49% | 65.27% | 0.50s |
-| SVM | 60.26% | 73.31% | 45.97% | 5.21s |
+## 🛠 Technologies
 
-**Dataset:**
-- Total: 7,703 samples
-- Features: 8 (from 73 analyzed, threshold lowered to 0.15)
-- Classes: 6 (PC 60.7%, FP 15.5%, CP 8.9%, KP 7.6%, APC 6.0%, FA 1.3%)
+- **Python 3.10+**
+  - pandas, numpy - Data manipulation
+  - scikit-learn - Machine learning
+  - scipy - Statistical analysis
+  - matplotlib, seaborn - Visualization
 
-**Issues:**
-- Weak feature correlations (max 0.405 from `toi` identifier)
-- ❌ **ID leakage**: `toi` and `toipfx` are identifiers, not physical features
-- No pre-calculated disposition score like Kepler
-- Highly imbalanced classes
+- **Node.js / Express**
+  - Frontend web application
+  - EJS templates
+  - Tailwind CSS
 
----
+## 📝 Key Insights
 
-### **TESS (After Feature Engineering)** ✅ NEW!
+1. **False Positive Flags** are the most important features (46%)
+2. **SNR-based features** are crucial for detection confidence
+3. **Metallicity** correlates with planet presence (metal-rich stars)
+4. **Multi-planet systems** are more likely to be real
+5. **Consistency checks** (depth, geometry) help filter false positives
 
-**Created 26 new features:**
-- **SNR metrics**: `pl_trandep_snr`, `pl_orbper_snr`, `pl_rade_snr`, `pl_trandurh_snr`
-- **Physical values**: `pl_trandep_value`, `pl_rade_value`, `pl_orbper_value`, `pl_eqt_value`
-- **Derived features**: `pl_rad_ratio`, `pl_semimajor_proxy`, `pl_trandur_ratio`
-- **Quality indicators**: `measurement_completeness`, `avg_measurement_snr`
-- **Stellar ratios**: `st_brightness_norm`, `st_distance_norm`, `st_brightness_dist_product`
+## 🎓 Lessons Learned
 
-**Top 15 Engineered Features (by Spearman correlation):**
-1. `st_tmag_value` (0.299)
-2. `st_brightness_norm` (0.299)
-3. `st_brightness_dist_product` (0.297)
-4. `st_dist_value` (0.238)
-5. `st_distance_norm` (0.238)
-6. `st_dist_quality` (0.126)
-7. `pl_trandurh_value` (0.115)
-8. `pl_semimajor_proxy` (0.109)
-9. `pl_orbper_value` (0.102)
-10. `pl_trandur_expected` (0.094)
+### ❌ What NOT to Do
+- Don't include error columns - they add noise
+- Don't use score/disposition columns - data leakage
+- Don't create features "just because" - each needs reasoning
+- Don't trust 100% accuracy - check for leakage
+- Don't use only linear correlations - data isn't always linear
 
-**Next Steps:**
-- Re-run `feature_selection.py` on `tess_engineered.csv`
-- Remove `toi` and `toipfx` identifiers
-- Expected improvement: More stable 60-65% accuracy without ID leakage
+### ✅ What TO Do
+- Remove error columns systematically
+- Validate for leakage and overfitting
+- Document reasoning for each feature
+- Use multiple correlation methods
+- Check train/test gap rigorously
 
----
+## 🤖 Generated with Claude Code
 
-## 🔬 Methodology
+This project was developed using intelligent feature engineering principles and rigorous machine learning practices.
 
-### **Feature Engineering (TESS Only)**
-
-**Problem:** TESS lacks pre-calculated quality scores like Kepler's `koi_score`
-
-**Solution:** Create derived metrics from raw measurements:
-
-1. **Signal-to-Noise Ratios**
-   ```python
-   pl_trandep_snr = pl_trandep / pl_trandeperr1
-   ```
-   - Higher SNR → Better measurement quality → Higher confidence
-
-2. **Orbital Physics**
-   ```python
-   pl_semimajor_proxy = (P² × M_star)^(1/3)  # Kepler's 3rd law
-   pl_trandur_expected = (P/π) × (R_star/a) × 24
-   pl_trandur_ratio = observed / expected
-   ```
-   - Consistency checks for transit physics
-
-3. **Stellar Quality Indicators**
-   ```python
-   st_dist_quality = st_disterr1 / st_dist  # Relative error
-   st_brightness_dist_product = brightness × (1/distance)
-   ```
-   - Better measurements → More reliable
-
-4. **Completeness Metrics**
-   ```python
-   measurement_completeness = count(non-null) / total_measurements
-   avg_measurement_snr = mean(all_snr_metrics)
-   ```
-   - More complete data → Higher quality candidate
-
----
-
-### **Feature Selection**
-
-1. Load raw NASA data (CSVs from Exoplanet Archive)
-2. **[TESS ONLY]** Run feature engineering first
-3. Detect feature types (continuous, binary, categorical)
-4. Calculate appropriate correlation metrics:
-   - **Spearman** for continuous features (non-linear, outlier-resistant)
-   - **Chi-Square (Cramér's V)** for categorical features
-   - **Mutual Information** for combinatorial flags
-5. Filter by correlation threshold and p-value < 0.05
-6. **Remove identifier columns** (toi, toipfx, rowid, etc.)
-
----
-
-### **Model Training**
-
-1. Load processed datasets (selected features only)
-2. Train-test split (80/20, stratified)
-3. Preprocessing with RobustScaler
-4. Train 3 models: XGBoost, Random Forest, SVM
-5. Evaluate with accuracy, AUC, F1, confusion matrix
-6. Compare and select best model
-
----
-
-## 📈 Key Findings
-
-### **Why TESS Needs Feature Engineering:**
-
-| Aspect | Kepler | TESS (Raw) | TESS (Engineered) |
-|--------|--------|------------|-------------------|
-| **Best Feature** | koi_score (0.750) | toi (0.405) ❌ ID | st_tmag (0.299) ✓ |
-| **Quality Metrics** | Pre-calculated | ❌ None | ✓ Created 26 |
-| **Feature Count** | 20 (>= 0.3) | 8 (>= 0.15) | 74 total |
-| **ID Leakage** | None | toi, toipfx | ✓ Removed |
-| **Expected Accuracy** | 89.25% | 69.76% (inflated) | ~60-65% (valid) |
-
----
-
-### **Kepler vs TESS Comparison:**
-
-**Kepler Advantages:**
-- ✅ Mature mission (8+ years of analysis)
-- ✅ Pre-calculated `koi_score` from Robovetter pipeline
-- ✅ Comprehensive centroid tests (8 features)
-- ✅ Balanced 3-class problem
-- ✅ Strong correlations (max 0.75)
-
-**TESS Challenges:**
-- ⚠️ Ongoing mission (early-stage candidates)
-- ⚠️ No disposition score equivalent
-- ⚠️ No centroid offset measurements in dataset
-- ⚠️ 6 highly imbalanced classes (PC dominates at 60.7%)
-- ⚠️ Weak correlations (max 0.299 after removing IDs)
-
----
-
-## 📝 Essential Scripts
-
-| File | Purpose | Input | Output |
-|------|---------|-------|--------|
-| `feature_selection.py` | Statistical feature selection | Raw CSVs | `*_selected_final.csv` |
-| `tess_feature_engineering.py` | Create TESS quality metrics | `TOI_*.csv` | `tess_engineered.csv` |
-| `prepare_datasets.py` | Extract selected features | Selected CSVs | `*_processed.csv` |
-| `train_tess_models.py` | Train TESS models | `tess_processed.csv` | Models + plots |
-| `kepler_final/train_kepler_models.py` | Train Kepler models | `kepler_processed.csv` | Models + plots |
-| `kepler_final/predict_new_candidate.py` | Predict new data | Raw 141-col CSV | Predictions |
-
-**Total:** 6 essential scripts (down from 9)
-
----
-
-## 📚 Documentation
-
-- **DATA_DICTIONARY.md**: Complete column reference for Kepler & TESS
-  - Official NASA API column names
-  - Units, types, descriptions
-  - Physical interpretation
-  - Feature selection justification
-
-- **kepler_final/README_KEPLER.md**: Detailed Kepler pipeline documentation
-
----
-
-## 🎯 Next Steps
-
-1. ✅ **TESS Feature Engineering** - COMPLETED
-2. ⏳ **Re-run feature selection** on `tess_engineered.csv` with threshold 0.20-0.25
-3. ⏳ **Remove ID features** (toi, toipfx) from selection
-4. ⏳ **Re-train TESS models** with engineered features
-5. ⏳ **Save trained models** as `.pkl` files for deployment
-6. ⏳ **Add cross-validation** for robust metrics
-7. ⏳ **K2 dataset** analysis (if needed)
-
----
-
-## 👥 Contributors
-
-NASA Space Apps Challenge Team
-
----
-
-## 📄 License
-
-NASA Space Apps Challenge 2025
-
-Data Source: [NASA Exoplanet Archive](https://exoplanetarchive.ipac.caltech.edu/)
+**Branch**: `feature_kepler_intelligent`
+**Date**: 2025-10-05
