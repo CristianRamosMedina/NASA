@@ -1,0 +1,53 @@
+Feature Type,Original Name,Readable Name,Description
+Base,koi_period,Orbital Period (days),Time the planet takes to complete one orbit around its star.
+Base,koi_sma,Semi-major Axis (AU),Average distance from the planet to its star.
+Base,koi_eccen,Orbital Eccentricity,Describes how stretched out the planet's orbit is.
+Base,koi_incl,Orbital Inclination (°),Tilt of the planet's orbit relative to the observer.
+Base,koi_prad,Planet Radius (Earth Radii),Radius of the planet compared to Earth's radius.
+Base,koi_duration,Transit Duration (hours),Time taken for the planet to pass in front of its star.
+Base,koi_depth,Transit Depth (ppm),Fractional decrease in brightness during transit.
+Base,koi_ror,Radius Ratio (Rp/Rs),Ratio of planet radius to stellar radius.
+Base,koi_impact,Impact Parameter,Minimum distance between the planet and star centers during transit.
+Base,koi_steff,Stellar Effective Temperature (K),Surface temperature of the host star.
+Base,koi_slogg,Surface Gravity (log10 cm/s²),Logarithm of the star’s surface gravity.
+Base,koi_srad,Stellar Radius (Solar Radii),Star radius compared to the Sun’s.
+Base,koi_smass,Stellar Mass (Solar Masses),Mass of the star compared to the Sun.
+Base,koi_smet,Stellar Metallicity [Fe/H],Abundance of elements heavier than hydrogen and helium.
+Base,koi_kepmag,Kepler Magnitude,Brightness in the Kepler photometric band.
+Base,koi_gmag,Gaia G Magnitude,Brightness from Gaia in the G band.
+Base,koi_rmag,R Magnitude,Brightness in the R (red) band.
+Base,koi_imag,I Magnitude,Brightness in the I (infrared) band.
+Base,koi_jmag,J Magnitude,Brightness in the near-infrared J band.
+Base,koi_hmag,H Magnitude,Brightness in the near-infrared H band.
+Base,koi_kmag,K Magnitude,Brightness in the near-infrared K band.
+Base,koi_teq,Equilibrium Temperature (K),Estimated temperature assuming radiative balance.
+Base,koi_insol,Incident Flux (Earth=1),Amount of stellar energy received by the planet.
+Base,koi_dor,Distance/Star Radius (a/Rs),Scaled orbital distance relative to the star’s radius.
+Base,koi_model_snr,Model Signal-to-Noise Ratio,Confidence of transit detection from the fitted model.
+Base,koi_count,Planet Count in System,Number of detected planets in the system.
+Base,koi_num_transits,Number of Observed Transits,Total transits observed for this object.
+Base,koi_fpflag_nt,False Positive: Not Transit,Flag indicating the event is not due to a transit.
+Base,koi_fpflag_ss,False Positive: Stellar Eclipse,Flag for secondary or stellar companion eclipse.
+Base,koi_fpflag_co,False Positive: Contamination,Flag for contamination from nearby sources.
+Base,koi_fpflag_ec,False Positive: Eccentric,Flag indicating unusual eccentricity or orbit issue.
+Base,ra,Right Ascension (°),Sky coordinate: east-west position.
+Base,dec,Declination (°),Sky coordinate: north-south position.
+Engineered,planet_star_radius_ratio,Planet-Star Radius Ratio,Ratio of planet to star size. Helps detect stellar companions.
+Engineered,planet_density_proxy,Planet Density Proxy,Approximation of density; distinguishes rocky from gaseous planets.
+Engineered,insol_teq_ratio,Insolation-Temperature Ratio,Checks consistency between flux and temperature (Stefan-Boltzmann).
+Engineered,orbital_velocity,Orbital Velocity,Speed of the planet along its orbit; extreme values may indicate errors.
+Engineered,hill_sphere_approx,Hill Sphere Approximation,Region of space where the planet’s gravity dominates.
+Engineered,periapsis_distance,Periapsis Distance,Closest distance between planet and star.
+Engineered,apoapsis_distance,Apoapsis Distance,Farthest orbital distance from the star.
+Engineered,depth_consistency,Depth Consistency Check,Compares observed transit depth to theoretical (Rp/Rs)².
+Engineered,duration_impact_relation,Duration-Impact Relation,Combines duration and impact parameter to refine geometry.
+Engineered,transit_snr,Transit Signal-to-Noise,Signal strength improves with number of transits observed.
+Engineered,stellar_density,Stellar Density,Estimated from surface gravity and radius.
+Engineered,main_sequence_deviation,Main Sequence Deviation,Deviation from expected stellar temperature-mass relation.
+Engineered,metallicity_temp,Metallicity-Temperature Factor,Product of metallicity and normalized temperature.
+Engineered,g_r_color,g-r Color Index,Optical color difference; indicates star temperature.
+Engineered,r_i_color,r-i Color Index,Color difference used for stellar classification.
+Engineered,j_k_color,J-K Color Index,"Infrared color difference, less affected by extinction."
+Engineered,is_multiplanet_system,Multi-Planet System Flag,True if more than one planet in system.
+Engineered,total_fp_flags,Total False Positive Flags,Sum of all false-positive indicators.
+Engineered,snr_per_transit,SNR per Transit,Normalized signal strength by number of transits.

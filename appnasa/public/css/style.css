@@ -530,13 +530,9 @@ body {
 }
 
 .form-container {
-    background: rgba(16, 24, 39, 0.9);
-    border-radius: 15px;
-    padding: 30px;
-    border: 2px solid rgba(64, 156, 255, 0.3);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(10px);
-    margin-bottom: 30px;
+    max-height: 80vh;
+    overflow-y: auto;
+    background: rgba(16, 24, 39, 0.95);
 }
 
 .data-table {
@@ -546,30 +542,57 @@ body {
     font-size: 1.1rem;
 }
 
+.data-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
 .data-table th {
-    background: rgba(64, 156, 255, 0.2);
+    background: rgba(64, 156, 255, 0.3);
     color: #409cff;
     padding: 20px;
     text-align: left;
     font-weight: bold;
-    border-bottom: 3px solid rgba(64, 156, 255, 0.3);
+    border-bottom: 3px solid rgba(64, 156, 255, 0.4);
     font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    position: sticky;
+    top: 0;
+}
+
+.data-table tbody {
+    background: rgba(16, 24, 39, 0.8);
+}
+
+.data-table tr:nth-child(even) {
+    background: rgba(30, 41, 59, 0.3);
+}
+
+.data-table tr:nth-child(odd) {
+    background: rgba(16, 24, 39, 0.5);
 }
 
 .data-table td {
     padding: 18px;
     border-bottom: 1px solid rgba(64, 156, 255, 0.2);
     color: #e0e0e0;
+    transition: all 0.3s ease;
 }
 
 .data-table tr:hover {
-    background: rgba(64, 156, 255, 0.05);
+    background: rgba(64, 156, 255, 0.1);
+    transform: translateX(5px);
+}
+
+.data-table tr:hover td {
+    color: #ffffff;
 }
 
 .table-input {
     width: 100%;
     padding: 15px;
-    background: rgba(30, 41, 59, 0.8);
+    background: rgba(30, 41, 59, 0.9);
     border: 2px solid rgba(64, 156, 255, 0.3);
     border-radius: 8px;
     color: #e0e0e0;
@@ -581,8 +604,9 @@ body {
 .table-input:focus {
     outline: none;
     border-color: #409cff;
-    box-shadow: 0 0 15px rgba(64, 156, 255, 0.5);
+    box-shadow: 0 0 20px rgba(64, 156, 255, 0.6);
     background: rgba(30, 41, 59, 1);
+    transform: scale(1.02);
 }
 
 .data-type {
@@ -593,13 +617,19 @@ body {
     font-size: 0.9rem;
     font-weight: bold;
     font-family: 'Space Mono', monospace;
+    display: inline-block;
+    min-width: 100px;
+    text-align: center;
 }
 
+/* Improved Form Actions */
 .form-actions {
     display: flex;
     gap: 20px;
     justify-content: flex-end;
     margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid rgba(64, 156, 255, 0.2);
 }
 
 .btn {
@@ -637,8 +667,57 @@ body {
     box-shadow: 0 8px 25px rgba(64, 156, 255, 0.3);
 }
 
-/* Responsive table */
+.btn-tertiary {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 2px solid rgba(239, 68, 68, 0.4);
+}
+
+.btn-tertiary:hover {
+    background: rgba(239, 68, 68, 0.2);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+}
+
+/* Table header counter */
+.table-info {
+    background: rgba(16, 24, 39, 0.9);
+    padding: 15px 25px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: 2px solid rgba(64, 156, 255, 0.3);
+    font-size: 1.1rem;
+    color: #409cff;
+    font-family: 'Orbitron', sans-serif;
+}
+
+/* Scrollbar styling for form container */
+.form-container::-webkit-scrollbar {
+    width: 12px;
+}
+
+.form-container::-webkit-scrollbar-track {
+    background: rgba(30, 41, 59, 0.5);
+    border-radius: 6px;
+}
+
+.form-container::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #409cff, #7e57c2);
+    border-radius: 6px;
+    border: 2px solid rgba(16, 24, 39, 0.5);
+}
+
+.form-container::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #7e57c2, #409cff);
+}
+
+/* Responsive improvements */
 @media (max-width: 768px) {
+    .form-container {
+        padding: 20px;
+        max-height: 70vh;
+    }
+    
     .data-table {
         font-size: 1rem;
     }
@@ -655,5 +734,917 @@ body {
     .btn {
         min-width: auto;
         width: 100%;
+    }
+    
+    .table-input {
+        padding: 12px;
+        font-size: 1rem;
+    }
+}
+
+/* Quick navigation for long forms */
+.quick-nav {
+    position: sticky;
+    top: 0;
+    background: rgba(16, 24, 39, 0.95);
+    padding: 15px;
+    border-bottom: 2px solid rgba(64, 156, 255, 0.3);
+    z-index: 100;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.quick-nav-btn {
+    background: rgba(64, 156, 255, 0.2);
+    color: #409cff;
+    border: 1px solid rgba(64, 156, 255, 0.4);
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.quick-nav-btn:hover {
+    background: rgba(64, 156, 255, 0.4);
+    transform: translateY(-2px);
+}
+
+/* Enhanced data type styles */
+.data-type.boolean {
+    background: rgba(245, 158, 11, 0.2);
+    color: #f59e0b;
+}
+
+.data-type.integer {
+    background: rgba(34, 197, 94, 0.2);
+    color: #22c55e;
+}
+
+.data-type.number {
+    background: rgba(64, 156, 255, 0.2);
+    color: #409cff;
+}
+
+/* Placeholder styling */
+.table-input::placeholder {
+    color: rgba(176, 176, 176, 0.6);
+    font-style: italic;
+}
+
+/* Field grouping for better organization */
+.data-table tr.group-header {
+    background: rgba(64, 156, 255, 0.3) !important;
+    border-left: 4px solid #409cff;
+}
+
+.data-table tr.group-header td {
+    color: #409cff;
+    font-weight: bold;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.1rem;
+    padding: 20px;
+    border-bottom: 2px solid rgba(64, 156, 255, 0.4);
+}
+
+/* Required field indicator */
+.required-field::after {
+    content: " *";
+    color: #ef4444;
+}
+
+/* Tooltip for field descriptions */
+.data-table td:first-child {
+    position: relative;
+}
+
+.data-table td:first-child:hover::after {
+    content: attr(data-description);
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(16, 24, 39, 0.95);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    z-index: 1000;
+    border: 2px solid rgba(64, 156, 255, 0.4);
+    margin-left: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Enhanced table info styles */
+.table-info {
+    background: rgba(16, 24, 39, 0.9);
+    padding: 15px 25px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: 2px solid rgba(64, 156, 255, 0.3);
+    font-size: 1.1rem;
+    color: #409cff;
+    font-family: 'Orbitron', sans-serif;
+    text-align: center;
+}
+
+/* Improved button styles for form actions */
+.btn-tertiary {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 2px solid rgba(239, 68, 68, 0.4);
+}
+
+.btn-tertiary:hover {
+    background: rgba(239, 68, 68, 0.2);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+}
+
+/* Better visual feedback for different input types */
+.table-input[data-type="boolean"]:valid {
+    border-color: #f59e0b;
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+}
+
+.table-input[data-type="integer"]:valid {
+    border-color: #22c55e;
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
+}
+
+.table-input[data-type="number"]:valid {
+    border-color: #409cff;
+    box-shadow: 0 0 10px rgba(64, 156, 255, 0.3);
+}
+
+/* Responsive adjustments for the new table */
+@media (max-width: 768px) {
+    .table-info {
+        padding: 12px 20px;
+        font-size: 1rem;
+    }
+    
+    .data-type {
+        min-width: 80px;
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
+}
+
+/* Animation for form transitions */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form-container {
+    animation: slideIn 0.5s ease-out;
+}
+
+/* Focus styles for accessibility */
+.table-input:focus {
+    outline: 2px solid #409cff;
+    outline-offset: 2px;
+}
+
+/* Selection styles for table rows */
+.data-table tr {
+    transition: all 0.2s ease;
+}
+
+.data-table tr:focus-within {
+    background: rgba(64, 156, 255, 0.15);
+    transform: translateX(5px);
+}
+
+/* Custom scrollbar for webkit browsers */
+.form-container::-webkit-scrollbar {
+    width: 12px;
+}
+
+.form-container::-webkit-scrollbar-track {
+    background: rgba(30, 41, 59, 0.5);
+    border-radius: 6px;
+}
+
+.form-container::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #409cff, #7e57c2);
+    border-radius: 6px;
+    border: 2px solid rgba(16, 24, 39, 0.5);
+}
+
+.form-container::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #7e57c2, #409cff);
+}
+
+/* Print styles for the form */
+@media print {
+    .form-container {
+        background: white;
+        color: black;
+        box-shadow: none;
+    }
+    
+    .data-table {
+        border: 1px solid #000;
+    }
+    
+    .data-table th {
+        background: #f0f0f0;
+        color: #000;
+    }
+    
+    .btn {
+        display: none;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .data-type.boolean {
+        background: #f59e0b;
+        color: #000;
+    }
+    
+    .data-type.integer {
+        background: #22c55e;
+        color: #000;
+    }
+    
+    .data-type.number {
+        background: #409cff;
+        color: #000;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .sidebar, 
+    .main-content, 
+    .card, 
+    .table-input,
+    .btn {
+        transition: none;
+    }
+    
+    .card {
+        animation: none;
+    }
+    
+    .form-container {
+        animation: none;
+    }
+}
+
+/* Dark mode enhancements (already dark, but for consistency) */
+@media (prefers-color-scheme: dark) {
+    .table-input {
+        background: rgba(30, 41, 59, 0.9);
+        color: #e0e0e0;
+        border-color: rgba(64, 156, 255, 0.3);
+    }
+    
+    .table-input:focus {
+        background: rgba(30, 41, 59, 1);
+        border-color: #409cff;
+    }
+}
+
+/* Loading states for form submission */
+.form-container.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.form-container.loading::after {
+    content: "Saving data...";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(16, 24, 39, 0.9);
+    color: #409cff;
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    z-index: 10;
+}
+
+/* Success state for form */
+.form-container.success {
+    border-color: #22c55e;
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+}
+
+/* Error state for form */
+.form-container.error {
+    border-color: #ef4444;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+}
+
+/* Excel-like Table Styles */
+.excel-table-container {
+    background: rgba(16, 24, 39, 0.95);
+    border-radius: 8px;
+    border: 2px solid rgba(64, 156, 255, 0.3);
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.excel-table-wrapper {
+    max-height: 60vh;
+    overflow: auto;
+}
+
+.excel-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1rem;
+    background: rgba(30, 41, 59, 0.9);
+    font-family: 'Space Mono', monospace;
+}
+
+.excel-header {
+    background: rgba(64, 156, 255, 0.4);
+    color: #ffffff;
+    padding: 15px 12px;
+    border: 1px solid rgba(64, 156, 255, 0.6);
+    font-weight: bold;
+    text-align: left;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    white-space: nowrap;
+    min-width: 120px;
+}
+
+.excel-table td {
+    padding: 12px;
+    border: 1px solid rgba(64, 156, 255, 0.3);
+    color: #e0e0e0;
+    background: rgba(16, 24, 39, 0.8);
+    transition: all 0.2s ease;
+}
+
+.excel-table tr:nth-child(even) td {
+    background: rgba(30, 41, 59, 0.6);
+}
+
+.excel-table tr:hover td {
+    background: rgba(64, 156, 255, 0.15);
+    color: #ffffff;
+}
+
+.excel-table .actions-cell {
+    white-space: nowrap;
+    min-width: 150px;
+}
+
+/* Excel table scrollbar */
+.excel-table-wrapper::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.excel-table-wrapper::-webkit-scrollbar-track {
+    background: rgba(30, 41, 59, 0.5);
+}
+
+.excel-table-wrapper::-webkit-scrollbar-thumb {
+    background: rgba(64, 156, 255, 0.5);
+    border-radius: 4px;
+}
+
+.excel-table-wrapper::-webkit-scrollbar-thumb:hover {
+    background: rgba(64, 156, 255, 0.7);
+}
+
+/* Small button styles */
+.btn-small {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    min-width: auto;
+    margin: 2px;
+}
+
+.btn-small.edit-btn {
+    background: rgba(34, 197, 94, 0.2);
+    color: #22c55e;
+    border: 1px solid rgba(34, 197, 94, 0.4);
+}
+
+.btn-small.edit-btn:hover {
+    background: rgba(34, 197, 94, 0.3);
+}
+
+.btn-small.delete-btn {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.btn-small.delete-btn:hover {
+    background: rgba(239, 68, 68, 0.3);
+}
+
+/* Empty state */
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #b0b0b0;
+    font-style: italic;
+}
+
+.empty-state .empty-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    opacity: 0.5;
+}
+
+/* Loading state */
+.loading-state {
+    text-align: center;
+    padding: 30px;
+    color: #409cff;
+}
+
+.loading-state .loading-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    animation: spin 1s linear infinite;
+}
+
+/* Record count styles */
+#recordCount {
+    background: rgba(64, 156, 255, 0.3);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    color: #409cff;
+}
+
+/* Responsive excel table */
+@media (max-width: 1200px) {
+    .excel-table-wrapper {
+        max-height: 50vh;
+    }
+    
+    .excel-header {
+        padding: 12px 8px;
+        font-size: 0.9rem;
+        min-width: 100px;
+    }
+    
+    .excel-table td {
+        padding: 10px 8px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .excel-table-container {
+        margin: 0 -10px;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
+    
+    .excel-table-wrapper {
+        max-height: 40vh;
+    }
+    
+    .excel-header {
+        padding: 10px 6px;
+        font-size: 0.8rem;
+        min-width: 80px;
+    }
+    
+    .excel-table td {
+        padding: 8px 6px;
+        font-size: 0.8rem;
+    }
+    
+    .btn-small {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+}
+
+/* Excel table animations */
+@keyframes rowHighlight {
+    0% {
+        background: rgba(64, 156, 255, 0.3);
+    }
+    100% {
+        background: rgba(16, 24, 39, 0.8);
+    }
+}
+
+.excel-table tr.new-row {
+    animation: rowHighlight 2s ease;
+}
+
+/* Filter and search controls */
+.table-controls {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.search-box {
+    flex: 1;
+    min-width: 200px;
+    padding: 12px;
+    background: rgba(30, 41, 59, 0.8);
+    border: 2px solid rgba(64, 156, 255, 0.3);
+    border-radius: 8px;
+    color: #e0e0e0;
+    font-size: 1rem;
+}
+
+.search-box:focus {
+    outline: none;
+    border-color: #409cff;
+    box-shadow: 0 0 10px rgba(64, 156, 255, 0.3);
+}
+
+.filter-select {
+    padding: 12px;
+    background: rgba(30, 41, 59, 0.8);
+    border: 2px solid rgba(64, 156, 255, 0.3);
+    border-radius: 8px;
+    color: #e0e0e0;
+    font-size: 1rem;
+    min-width: 150px;
+}
+
+/* Upload Area Styles */
+.upload-area {
+    border: 3px dashed rgba(64, 156, 255, 0.5);
+    border-radius: 15px;
+    padding: 60px 40px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgba(64, 156, 255, 0.05);
+    margin: 20px 0;
+}
+
+.upload-area:hover {
+    border-color: rgba(64, 156, 255, 0.8);
+    background: rgba(64, 156, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.upload-area.drag-over {
+    border-color: #409cff;
+    background: rgba(64, 156, 255, 0.2);
+    transform: scale(1.02);
+}
+
+.upload-area.file-selected {
+    border-color: #4ade80;
+    background: rgba(74, 222, 128, 0.1);
+}
+
+.upload-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    opacity: 0.7;
+}
+
+.upload-area h3 {
+    color: #409cff;
+    margin-bottom: 10px;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.upload-area p {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 20px;
+}
+
+.file-input {
+    display: none;
+}
+
+/* Upload Preview Styles */
+.upload-preview {
+    margin: 20px 0;
+}
+
+.preview-info {
+    background: rgba(64, 156, 255, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border-left: 4px solid #409cff;
+}
+
+.preview-info p {
+    margin: 5px 0;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.preview-table-container {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid rgba(64, 156, 255, 0.3);
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.preview-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(13, 17, 28, 0.9);
+}
+
+.preview-table th {
+    background: rgba(64, 156, 255, 0.2);
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: bold;
+    color: #409cff;
+    border-bottom: 2px solid rgba(64, 156, 255, 0.3);
+    position: sticky;
+    top: 0;
+    backdrop-filter: blur(10px);
+}
+
+.preview-table td {
+    padding: 10px 15px;
+    border-bottom: 1px solid rgba(64, 156, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.preview-table tr:hover {
+    background: rgba(64, 156, 255, 0.1);
+}
+
+/* Empty State Styles */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.empty-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .upload-area {
+        padding: 40px 20px;
+    }
+    
+    .upload-icon {
+        font-size: 3rem;
+    }
+    
+    .preview-table-container {
+        max-height: 300px;
+    }
+    
+    .preview-table th,
+    .preview-table td {
+        padding: 8px 10px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Statistics Section Styles */
+.images-container {
+    margin: 20px 0;
+}
+
+.loading-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.loading-icon {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    animation: spin 2s linear infinite;
+}
+
+.images-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    margin: 25px 0;
+}
+
+.image-card {
+    background: rgba(13, 17, 28, 0.8);
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid rgba(64, 156, 255, 0.3);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.image-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(64, 156, 255, 0.6);
+    box-shadow: 0 10px 30px rgba(64, 156, 255, 0.2);
+}
+
+.image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+}
+
+.image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.image-card:hover .image-wrapper img {
+    transform: scale(1.05);
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-card:hover .image-overlay {
+    opacity: 1;
+}
+
+.image-info {
+    padding: 20px;
+}
+
+.image-info h4 {
+    color: #409cff;
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+}
+
+.image-info p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* Documentation Section Styles */
+.documentation-info {
+    background: rgba(64, 156, 255, 0.1);
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    border-left: 4px solid #409cff;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.csv-files-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 25px;
+    margin: 25px 0;
+}
+
+.csv-file-card {
+    background: rgba(13, 17, 28, 0.8);
+    border-radius: 15px;
+    border: 1px solid rgba(64, 156, 255, 0.3);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.csv-file-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(64, 156, 255, 0.6);
+    box-shadow: 0 10px 30px rgba(64, 156, 255, 0.2);
+}
+
+.csv-file-header {
+    background: rgba(64, 156, 255, 0.2);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.csv-icon {
+    font-size: 2rem;
+}
+
+.csv-file-header h4 {
+    color: #409cff;
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.csv-file-body {
+    padding: 20px;
+}
+
+.csv-file-body p {
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.csv-file-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* CSV Preview Table */
+.csv-preview-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(13, 17, 28, 0.9);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.csv-preview-table th {
+    background: rgba(64, 156, 255, 0.3);
+    padding: 15px;
+    text-align: left;
+    color: #409cff;
+    font-weight: bold;
+    border-bottom: 2px solid rgba(64, 156, 255, 0.5);
+}
+
+.csv-preview-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid rgba(64, 156, 255, 0.2);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.csv-preview-table tr:hover {
+    background: rgba(64, 156, 255, 0.1);
+}
+
+/* Modal Styles */
+.image-modal, .csv-modal {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .images-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .csv-files-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .image-wrapper {
+        height: 180px;
+    }
+    
+    .csv-preview-table {
+        font-size: 0.9rem;
+    }
+    
+    .csv-preview-table th,
+    .csv-preview-table td {
+        padding: 10px 12px;
     }
 }

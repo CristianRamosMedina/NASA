@@ -30,13 +30,12 @@
                                 <span class="menu-icon">🆕</span>
                                 <span class="menu-text">New Candidate</span>
                             </a></li>
-                        <li><a href="#" data-tooltip="Manage Candidate">
+                        <li><a href="#" id="manageCandidateBtn" data-tooltip="Manage Candidate">
                                 <span class="menu-icon">⚙️</span>
                                 <span class="menu-text">Manage Candidate</span>
                             </a></li>
                     </ul>
                 </li>
-
                 <!-- Tables Section -->
                 <li class="menu-section">
                     <div class="menu-header" data-tooltip="Tables">
@@ -44,11 +43,11 @@
                         <span class="menu-text">Tables</span>
                     </div>
                     <ul class="menu-items">
-                        <li><a href="#" data-tooltip="New Table">
+                        <li><a href="#" id="newTableBtn" data-tooltip="New Table">
                                 <span class="menu-icon">🆕</span>
                                 <span class="menu-text">New Table</span>
                             </a></li>
-                        <li><a href="#" data-tooltip="Manage Table">
+                        <li><a href="#" id="manageTableBtn" data-tooltip="Manage Table">
                                 <span class="menu-icon">⚙️</span>
                                 <span class="menu-text">Manage Table</span>
                             </a></li>
@@ -62,30 +61,35 @@
                         <span class="menu-text">Resources</span>
                     </div>
                     <ul class="menu-items">
-                        <li><a href="/galeria" data-tooltip="Images">
+                        <li>
+                            <a href="/galeria" data-tooltip="Images">
                                 <span class="menu-icon">🖼️</span>
                                 <span class="menu-text">Images</span>
-                            </a></li>
-                        <li><a href="#" data-tooltip="Statistics">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-tooltip="Statistics">
                                 <span class="menu-icon">📈</span>
                                 <span class="menu-text">Statistics</span>
-                            </a></li>
-                        <li><a href="#" data-tooltip="Documentation">
-                                <span class="menu-icon">📈</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-tooltip="Documentation">
+                                <span class="menu-icon">📚</span>
                                 <span class="menu-text">Documentation</span>
-                            </a></li>
+                            </a>
+                        </li>
                     </ul>
-                </li>
-            </ul>
-            <div class="sidebar-footer">
-                <div class="user-info">
-                    <div class="avatar">👨‍🚀</div>
-                    <div class="user-details">
-                        <span class="username">Astronaut</span>
-                        <span class="user-status">Online</span>
+
+                    <div class="sidebar-footer">
+                        <div class="user-info">
+                            <div class="avatar">👨‍🚀</div>
+                            <div class="user-details">
+                                <span class="username">Astronaut</span>
+                                <span class="user-status">Online</span>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
         </nav>
 
         <!-- Main Content -->
@@ -147,7 +151,6 @@
                     </div>
                 </div>
             </section>
-
             <!-- New Candidate Form Section (Hidden by default) -->
             <section id="newCandidateSection" class="hidden">
                 <div class="content-header">
@@ -156,6 +159,12 @@
                 </div>
 
                 <div class="form-container">
+                    <div class="table-info">
+                        📊 <strong>Kepler Object of Interest (KOI) Data Table</strong> |
+                        Total Fields: 30 |
+                        Required: All numeric fields must contain valid numbers
+                    </div>
+
                     <form id="candidateForm">
                         <table class="data-table">
                             <thead>
@@ -166,212 +175,380 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- Campos originales (1-20) -->
                                 <tr>
-                                    <td><label for="koi_score">koi_score</label></td>
-                                    <td><input type="text" id="koi_score" name="koi_score" class="table-input"></td>
+                                    <td><label for="koi_period">Orbital Period (days)</label></td>
+                                    <td><input type="text" id="koi_period" name="koi_period" class="table-input"
+                                            placeholder="Enter days"></td>
                                     <td><span class="data-type">number</span></td>
                                 </tr>
                                 <tr>
-                                    <td><label for="koi_fwm_stat_sig">koi_fwm_stat_sig</label></td>
-                                    <td><input type="text" id="koi_fwm_stat_sig" name="koi_fwm_stat_sig"
-                                            class="table-input"></td>
+                                    <td><label for="koi_sma">Semi-major Axis (AU)</label></td>
+                                    <td><input type="text" id="koi_sma" name="koi_sma" class="table-input"
+                                            placeholder="Enter AU"></td>
                                     <td><span class="data-type">number</span></td>
                                 </tr>
                                 <tr>
-                                    <td><label for="koi_srho_err2">koi_srho_err2</label></td>
-                                    <td><input type="text" id="koi_srho_err2" name="koi_srho_err2" class="table-input">
-                                    </td>
+                                    <td><label for="koi_eccen">Orbital Eccentricity</label></td>
+                                    <td><input type="text" id="koi_eccen" name="koi_eccen" class="table-input"
+                                            placeholder="0.0 - 1.0"></td>
                                     <td><span class="data-type">number</span></td>
                                 </tr>
                                 <tr>
-                                    <td><label for="koi_dor_err2">koi_dor_err2</label></td>
-                                    <td><input type="text" id="koi_dor_err2" name="koi_dor_err2" class="table-input">
-                                    </td>
+                                    <td><label for="koi_incl">Orbital Inclination (°)</label></td>
+                                    <td><input type="text" id="koi_incl" name="koi_incl" class="table-input"
+                                            placeholder="Enter degrees"></td>
                                     <td><span class="data-type">number</span></td>
                                 </tr>
                                 <tr>
-                                    <td><label for="koi_dor_err1">koi_dor_err1</label></td>
-                                    <td><input type="text" id="koi_dor_err1" name="koi_dor_err1" class="table-input">
-                                    </td>
+                                    <td><label for="koi_prad">Planet Radius (Earth Radii)</label></td>
+                                    <td><input type="text" id="koi_prad" name="koi_prad" class="table-input"
+                                            placeholder="Enter Earth radii"></td>
                                     <td><span class="data-type">number</span></td>
                                 </tr>
                                 <tr>
-                                    <td><label for="koi_incl">koi_incl</label></td>
-                                    <td><input type="text" id="koi_incl" name="koi_incl" class="table-input"></td>
+                                    <td><label for="koi_duration">Transit Duration (hours)</label></td>
+                                    <td><input type="text" id="koi_duration" name="koi_duration" class="table-input"
+                                            placeholder="Enter hours"></td>
                                     <td><span class="data-type">number</span></td>
                                 </tr>
                                 <tr>
-                                    <td><label for="koi_prad_err1">koi_prad_err1</label></td>
-                                    <td><input type="text" id="koi_prad_err1" name="koi_prad_err1" class="table-input">
-                                    </td>
+                                    <td><label for="koi_depth">Transit Depth (ppm)</label></td>
+                                    <td><input type="text" id="koi_depth" name="koi_depth" class="table-input"
+                                            placeholder="Enter ppm"></td>
                                     <td><span class="data-type">number</span></td>
                                 </tr>
                                 <tr>
-                                    <td><label for="koi_count">koi_count</label></td>
-                                    <td><input type="text" id="koi_count" name="koi_count" class="table-input"></td>
+                                    <td><label for="koi_ror">Radius Ratio (Rp/Rs)</label></td>
+                                    <td><input type="text" id="koi_ror" name="koi_ror" class="table-input"
+                                            placeholder="Enter ratio"></td>
+                                    <td><span class="data-type">number</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="koi_impact">Impact Parameter</label></td>
+                                    <td><input type="text" id="koi_impact" name="koi_impact" class="table-input"
+                                            placeholder="0.0 - 1.0"></td>
+                                    <td><span class="data-type">number</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="koi_steff">Stellar Effective Temperature (K)</label></td>
+                                    <td><input type="text" id="koi_steff" name="koi_steff" class="table-input"
+                                            placeholder="Enter Kelvin"></td>
+                                    <td><span class="data-type">number</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="koi_slogg">Surface Gravity (log10 cm/s²)</label></td>
+                                    <td><input type="text" id="koi_slogg" name="koi_slogg" class="table-input"
+                                            placeholder="Enter log10(cm/s²)"></td>
+                                    <td><span class="data-type">number</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="koi_srad">Stellar Radius (Solar Radii)</label></td>
+                                    <td><input type="text" id="koi_srad" name="koi_srad" class="table-input"
+                                            placeholder="Enter Solar radii"></td>
+                                    <td><span class="data-type">number</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="koi_smass">Stellar Mass (Solar Masses)</label></td>
+                                    <td><input type="text" id="koi_smass" name="koi_smass" class="table-input"
+                                            placeholder="Enter Solar masses"></td>
+                                    <td><span class="data-type">number</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="koi_smet">Stellar Metallicity [Fe/H]</label></td>
+                                    <td><input type="text" id="koi_smet" name="koi_smet" class="table-input"
+                                            placeholder="Enter [Fe/H]"></td>
+                                    <td><span class="data-type">number</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="koi_kepmag">Kepler Magnitude</label></td>
+                                    <td><input type="text" id="koi_kepmag" name="koi_kepmag" class="table-input"
+                                            placeholder="Enter magnitude"></td>
+                                    <td><span class="data-type">number</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="koi_gmag">Gaia G Magnitude</label></td>
+                                    <td><input type="text" id="koi_gmag" name="koi_gmag" class="table-input"
+                                            placeholder="Enter magnitude"></td>
+                                    <td><span class="data-type">number</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="koi_rmag">R Magnitude</label></td>
+                                    <td><input type="text" id="koi_rmag" name="koi_rmag" class="table-input"
+                                            placeholder="Enter magnitude"></td>
+                                    <td><span class="data-type">number</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="koi_imag">I Magnitude</label></td>
+                                    <td><input type="text" id="koi_imag" name="koi_imag" class="table-input"
+                                            placeholder="Enter magnitude"></td>
+                                    <td><span class="data-type">number</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="koi_jmag">J Magnitude</label></td>
+                                    <td><input type="text" id="koi_jmag" name="koi_jmag" class="table-input"
+                                            placeholder="Enter magnitude"></td>
+                                    <td><span class="data-type">number</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="koi_hmag">H Magnitude</label></td>
+                                    <td><input type="text" id="koi_hmag" name="koi_hmag" class="table-input"
+                                            placeholder="Enter magnitude"></td>
+                                    <td><span class="data-type">number</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="koi_kmag">K Magnitude</label></td>
+                                    <td><input type="text" id="koi_kmag" name="koi_kmag" class="table-input"
+                                            placeholder="Enter magnitude"></td>
+                                    <td><span class="data-type">number</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="koi_teq">Equilibrium Temperature (K)</label></td>
+                                    <td><input type="text" id="koi_teq" name="koi_teq" class="table-input"
+                                            placeholder="Enter Kelvin"></td>
+                                    <td><span class="data-type">number</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="koi_insol">Incident Flux (Earth=1)</label></td>
+                                    <td><input type="text" id="koi_insol" name="koi_insol" class="table-input"
+                                            placeholder="Enter Earth units"></td>
+                                    <td><span class="data-type">number</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="koi_dor">Distance/Star Radius (a/Rs)</label></td>
+                                    <td><input type="text" id="koi_dor" name="koi_dor" class="table-input"
+                                            placeholder="Enter a/Rs"></td>
+                                    <td><span class="data-type">number</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="koi_model_snr">Model Signal-to-Noise Ratio</label></td>
+                                    <td><input type="text" id="koi_model_snr" name="koi_model_snr" class="table-input"
+                                            placeholder="Enter SNR"></td>
+                                    <td><span class="data-type">number</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="koi_count">Planet Count in System</label></td>
+                                    <td><input type="text" id="koi_count" name="koi_count" class="table-input"
+                                            placeholder="Enter count"></td>
                                     <td><span class="data-type">integer</span></td>
                                 </tr>
                                 <tr>
-                                    <td><label for="koi_dor">koi_dor</label></td>
-                                    <td><input type="text" id="koi_dor" name="koi_dor" class="table-input"></td>
+                                    <td><label for="koi_num_transits">Number of Observed Transits</label></td>
+                                    <td><input type="text" id="koi_num_transits" name="koi_num_transits"
+                                            class="table-input" placeholder="Enter number"></td>
+                                    <td><span class="data-type">integer</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="koi_fpflag_nt">False Positive: Not Transit</label></td>
+                                    <td><input type="text" id="koi_fpflag_nt" name="koi_fpflag_nt" class="table-input"
+                                            placeholder="0 or 1"></td>
+                                    <td><span class="data-type">boolean</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="koi_fpflag_ss">False Positive: Stellar Eclipse</label></td>
+                                    <td><input type="text" id="koi_fpflag_ss" name="koi_fpflag_ss" class="table-input"
+                                            placeholder="0 or 1"></td>
+                                    <td><span class="data-type">boolean</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="koi_fpflag_co">False Positive: Contamination</label></td>
+                                    <td><input type="text" id="koi_fpflag_co" name="koi_fpflag_co" class="table-input"
+                                            placeholder="0 or 1"></td>
+                                    <td><span class="data-type">boolean</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="koi_fpflag_ec">False Positive: Eccentric</label></td>
+                                    <td><input type="text" id="koi_fpflag_ec" name="koi_fpflag_ec" class="table-input"
+                                            placeholder="0 or 1"></td>
+                                    <td><span class="data-type">boolean</span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="ra">Right Ascension (°)</label></td>
+                                    <td><input type="text" id="ra" name="ra" class="table-input"
+                                            placeholder="Enter degrees"></td>
                                     <td><span class="data-type">number</span></td>
                                 </tr>
                                 <tr>
-                                    <td><label for="koi_dikco_mdec_err">koi_dikco_mdec_err</label></td>
-                                    <td><input type="text" id="koi_dikco_mdec_err" name="koi_dikco_mdec_err"
-                                            class="table-input"></td>
-                                    <td><span class="data-type">number</span></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="koi_period_err1">koi_period_err1</label></td>
-                                    <td><input type="text" id="koi_period_err1" name="koi_period_err1"
-                                            class="table-input"></td>
-                                    <td><span class="data-type">number</span></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="koi_period_err2">koi_period_err2</label></td>
-                                    <td><input type="text" id="koi_period_err2" name="koi_period_err2"
-                                            class="table-input"></td>
-                                    <td><span class="data-type">number</span></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="koi_dikco_mra_err">koi_dikco_mra_err</label></td>
-                                    <td><input type="text" id="koi_dikco_mra_err" name="koi_dikco_mra_err"
-                                            class="table-input"></td>
-                                    <td><span class="data-type">number</span></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="koi_prad_err2">koi_prad_err2</label></td>
-                                    <td><input type="text" id="koi_prad_err2" name="koi_prad_err2" class="table-input">
-                                    </td>
-                                    <td><span class="data-type">continuous</span></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="koi_dikco_msky_err">koi_dikco_msky_err</label></td>
-                                    <td><input type="text" id="koi_dikco_msky_err" name="koi_dikco_msky_err"
-                                            class="table-input"></td>
-                                    <td><span class="data-type">number</span></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="koi_max_sngle_ev">koi_max_sngle_ev</label></td>
-                                    <td><input type="text" id="koi_max_sngle_ev" name="koi_max_sngle_ev"
-                                            class="table-input"></td>
-                                    <td><span class="data-type">number</span></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="koi_prad">koi_prad</label></td>
-                                    <td><input type="text" id="koi_prad" name="koi_prad" class="table-input"></td>
-                                    <td><span class="data-type">continuous</span></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="koi_dicco_mdec_err">koi_dicco_mdec_err</label></td>
-                                    <td><input type="text" id="koi_dicco_mdec_err" name="koi_dicco_mdec_err"
-                                            class="table-input"></td>
-                                    <td><span class="data-type">number</span></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="koi_model_snr">koi_model_snr</label></td>
-                                    <td><input type="text" id="koi_model_snr" name="koi_model_snr" class="table-input">
-                                    </td>
-                                    <td><span class="data-type">number</span></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="koi_dicco_mra_err">koi_dicco_mra_err</label></td>
-                                    <td><input type="text" id="koi_dicco_mra_err" name="koi_dicco_mra_err"
-                                            class="table-input"></td>
-                                    <td><span class="data-type">number</span></td>
-                                </tr>
-
-                                <!-- Campos adicionales (21-30) -->
-                                <tr>
-                                    <td><label for="koi_teq">koi_teq</label></td>
-                                    <td><input type="text" id="koi_teq" name="koi_teq" class="table-input"></td>
-                                    <td><span class="data-type">number</span></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="koi_steff">koi_steff</label></td>
-                                    <td><input type="text" id="koi_steff" name="koi_steff" class="table-input"></td>
-                                    <td><span class="data-type">number</span></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="koi_slogg">koi_slogg</label></td>
-                                    <td><input type="text" id="koi_slogg" name="koi_slogg" class="table-input"></td>
-                                    <td><span class="data-type">number</span></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="koi_smet">koi_smet</label></td>
-                                    <td><input type="text" id="koi_smet" name="koi_smet" class="table-input"></td>
-                                    <td><span class="data-type">number</span></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="koi_srad">koi_srad</label></td>
-                                    <td><input type="text" id="koi_srad" name="koi_srad" class="table-input"></td>
-                                    <td><span class="data-type">number</span></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="koi_smass">koi_smass</label></td>
-                                    <td><input type="text" id="koi_smass" name="koi_smass" class="table-input"></td>
-                                    <td><span class="data-type">number</span></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="koi_kepmag">koi_kepmag</label></td>
-                                    <td><input type="text" id="koi_kepmag" name="koi_kepmag" class="table-input"></td>
-                                    <td><span class="data-type">number</span></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="koi_ror">koi_ror</label></td>
-                                    <td><input type="text" id="koi_ror" name="koi_ror" class="table-input"></td>
-                                    <td><span class="data-type">number</span></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="koi_impact">koi_impact</label></td>
-                                    <td><input type="text" id="koi_impact" name="koi_impact" class="table-input"></td>
-                                    <td><span class="data-type">number</span></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="koi_duration">koi_duration</label></td>
-                                    <td><input type="text" id="koi_duration" name="koi_duration" class="table-input">
-                                    </td>
-                                    <td><span class="data-type">number</span></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="koi_epoch">koi_epoch</label></td>
-                                    <td><input type="text" id="koi_epoch" name="koi_epoch" class="table-input"></td>
-                                    <td><span class="data-type">number</span></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="koi_period">koi_period</label></td>
-                                    <td><input type="text" id="koi_period" name="koi_period" class="table-input"></td>
-                                    <td><span class="data-type">number</span></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="koi_depth">koi_depth</label></td>
-                                    <td><input type="text" id="koi_depth" name="koi_depth" class="table-input"></td>
-                                    <td><span class="data-type">number</span></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="koi_ror_err1">koi_ror_err1</label></td>
-                                    <td><input type="text" id="koi_ror_err1" name="koi_ror_err1" class="table-input">
-                                    </td>
-                                    <td><span class="data-type">number</span></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="koi_ror_err2">koi_ror_err2</label></td>
-                                    <td><input type="text" id="koi_ror_err2" name="koi_ror_err2" class="table-input">
-                                    </td>
+                                    <td><label for="dec">Declination (°)</label></td>
+                                    <td><input type="text" id="dec" name="dec" class="table-input"
+                                            placeholder="Enter degrees"></td>
                                     <td><span class="data-type">number</span></td>
                                 </tr>
                             </tbody>
                         </table>
 
                         <div class="form-actions">
-                            <button type="submit" class="btn btn-primary">Save Candidate</button>
+                            <button type="submit" class="btn btn-primary">Save Candidate Data</button>
                             <button type="button" class="btn btn-secondary" id="backToDashboard">Back to
                                 Dashboard</button>
                             <button type="button" class="btn btn-tertiary" id="clearForm">Clear Form</button>
                         </div>
                     </form>
+                </div>
+            </section>
+            <!-- Manage Candidate Section (Hidden by default) -->
+            <section id="manageCandidateSection" class="hidden">
+                <div class="content-header">
+                    <h1>Manage Candidate Data</h1>
+                    <p>View and manage all saved candidate information</p>
+                </div>
+
+                <div class="form-container">
+                    <div class="table-info">
+                        📊 <strong>Saved Candidate Data</strong> |
+                        Total Records: <span id="recordCount">0</span> |
+                        <button class="btn btn-small" id="exportExcel">Export to Excel</button>
+                    </div>
+
+                    <div class="excel-table-container" id="excelTableContainer">
+                        <div class="excel-table-wrapper">
+                            <table class="excel-table" id="candidateDataTable">
+                                <thead>
+                                    <tr>
+                                        <th class="excel-header">ID</th>
+                                        <th class="excel-header">Orbital Period (days)</th>
+                                        <th class="excel-header">Semi-major Axis (AU)</th>
+                                        <th class="excel-header">Orbital Eccentricity</th>
+                                        <th class="excel-header">Orbital Inclination (°)</th>
+                                        <th class="excel-header">Planet Radius (Earth Radii)</th>
+                                        <th class="excel-header">Transit Duration (hours)</th>
+                                        <th class="excel-header">Transit Depth (ppm)</th>
+                                        <th class="excel-header">Radius Ratio (Rp/Rs)</th>
+                                        <th class="excel-header">Impact Parameter</th>
+                                        <th class="excel-header">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="candidateTableBody">
+                                    <!-- Los datos se cargarán dinámicamente aquí -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="backToDashboardFromManage">Back to
+                            Dashboard</button>
+                        <button type="button" class="btn btn-tertiary" id="clearAllData">Clear All Data</button>
+                    </div>
+                </div>
+            </section>
+            <!-- New Table Section (Hidden by default) -->
+            <section id="newTableSection" class="hidden">
+                <div class="content-header">
+                    <h1>Upload Exoplanet CSV</h1>
+                    <p>Upload your CSV file with exoplanet data</p>
+                </div>
+
+                <div class="form-container">
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">📁</div>
+                        <h3>Upload CSV File</h3>
+                        <p>Drag & drop your exoplanet CSV file here or click to browse</p>
+                        <input type="file" id="csvFile" accept=".csv" class="file-input">
+                        <button class="btn btn-primary" id="uploadBtn" style="display: none;">Process CSV</button>
+                    </div>
+
+                    <div class="upload-preview" id="uploadPreview" style="display: none;">
+                        <h4>File Preview</h4>
+                        <div class="preview-table-container" id="previewTableContainer"></div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-primary" id="confirmUpload">Confirm Upload</button>
+                            <button type="button" class="btn btn-secondary" id="cancelUpload">Cancel</button>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="backToDashboardFromNewTable">Back to
+                            Dashboard</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Manage Table Section (Hidden by default) -->
+            <section id="manageTableSection" class="hidden">
+                <div class="content-header">
+                    <h1>Manage Exoplanet Data</h1>
+                    <p>View and manage uploaded exoplanet CSV data</p>
+                </div>
+
+                <div class="form-container">
+                    <div class="table-info">
+                        📊 <strong>Exoplanet Data Table</strong> |
+                        Total Records: <span id="exoplanetRecordCount">0</span> |
+                        <button class="btn btn-small" id="downloadProcessedCsv">Download Processed CSV</button>
+                        <button class="btn btn-small btn-tertiary" id="clearExoplanetData">Clear All Data</button>
+                    </div>
+
+                    <div class="excel-table-container">
+                        <div class="excel-table-wrapper">
+                            <table class="excel-table" id="exoplanetDataTable">
+                                <thead id="exoplanetTableHead">
+                                    <tr>
+                                        <th class="excel-header" colspan="10"
+                                            style="text-align: center; background: rgba(64, 156, 255, 0.1);">
+                                            Upload a CSV file to see data
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="exoplanetTableBody">
+                                    <tr>
+                                        <td colspan="10" class="empty-state">
+                                            <div class="empty-icon">📊</div>
+                                            <p>No exoplanet data available</p>
+                                            <p style="font-size: 0.9rem; margin-top: 10px;">Go to "New Table" to upload
+                                                a CSV file</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="backToDashboardFromManageTable">Back to
+                            Dashboard</button>
+                    </div>
+                </div>
+            </section>
+            <!-- Statistics Section (Hidden by default) -->
+            <section id="statisticsSection" class="hidden">
+                <div class="content-header">
+                    <h1>Statistics Images</h1>
+                    <p>View statistical graphs and data visualizations</p>
+                </div>
+
+                <div class="form-container">
+                    <div class="images-container" id="imagesContainer">
+                        <!-- Las imágenes se cargarán aquí dinámicamente -->
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="backToDashboardFromStatistics">Back to
+                            Dashboard</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Documentation Section (Hidden by default) -->
+            <section id="documentationSection" class="hidden">
+                <div class="content-header">
+                    <h1>Documentation Files</h1>
+                    <p>View and manage CSV documentation files</p>
+                </div>
+
+                <div class="form-container">
+                    <div class="documentation-info">
+                        📁 <strong>CSV Documentation Files</strong> |
+                        Path: appnasa/utils/documentation/
+                    </div>
+
+                    <div class="csv-files-container" id="csvFilesContainer">
+                        <!-- Los archivos CSV se mostrarán aquí -->
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="backToDashboardFromDocumentation">Back to
+                            Dashboard</button>
+                    </div>
                 </div>
             </section>
         </main>
