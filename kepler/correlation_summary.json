@@ -1,0 +1,130 @@
+{
+  "top_20_correlations": [
+    {
+      "feature": "koi_eccen",
+      "correlation": NaN
+    },
+    {
+      "feature": "total_fp_flags",
+      "correlation": -0.5928733780390948
+    },
+    {
+      "feature": "koi_count",
+      "correlation": 0.4523556034529727
+    },
+    {
+      "feature": "is_multiplanet_system",
+      "correlation": 0.437761078856076
+    },
+    {
+      "feature": "koi_fpflag_ss",
+      "correlation": -0.3418822577096861
+    },
+    {
+      "feature": "koi_fpflag_co",
+      "correlation": -0.3148462716897415
+    },
+    {
+      "feature": "metallicity_temp",
+      "correlation": 0.30375532754185663
+    },
+    {
+      "feature": "koi_smet",
+      "correlation": 0.2965972095583346
+    },
+    {
+      "feature": "koi_fpflag_nt",
+      "correlation": -0.27443337414210955
+    },
+    {
+      "feature": "koi_fpflag_ec",
+      "correlation": -0.23439041535618788
+    },
+    {
+      "feature": "koi_impact",
+      "correlation": -0.18551961467854
+    },
+    {
+      "feature": "koi_steff",
+      "correlation": -0.1837230500165618
+    },
+    {
+      "feature": "koi_incl",
+      "correlation": 0.17927660376663337
+    },
+    {
+      "feature": "duration_impact_relation",
+      "correlation": -0.17387580802745486
+    },
+    {
+      "feature": "koi_prad",
+      "correlation": -0.15667839148733922
+    },
+    {
+      "feature": "main_sequence_deviation",
+      "correlation": -0.14931056958686187
+    },
+    {
+      "feature": "koi_insol",
+      "correlation": -0.14899775680457475
+    },
+    {
+      "feature": "koi_teq",
+      "correlation": -0.1466093864078665
+    },
+    {
+      "feature": "depth_consistency",
+      "correlation": -0.14527599807239805
+    },
+    {
+      "feature": "planet_density_proxy",
+      "correlation": 0.14022807910077348
+    }
+  ],
+  "category_averages": [
+    {
+      "category": "Base - Orbital",
+      "avg_correlation": NaN
+    },
+    {
+      "category": "Engineered - Detection",
+      "avg_correlation": 0.3558873907858844
+    },
+    {
+      "category": "Base - FP Flags",
+      "avg_correlation": 0.29138807972443126
+    },
+    {
+      "category": "Base - Detection",
+      "avg_correlation": 0.23800078297020685
+    },
+    {
+      "category": "Engineered - Stellar",
+      "avg_correlation": 0.18877958712728635
+    },
+    {
+      "category": "Base - Stellar",
+      "avg_correlation": 0.16849573651682612
+    },
+    {
+      "category": "Engineered - Transit",
+      "avg_correlation": 0.11113139486209263
+    },
+    {
+      "category": "Base - Transit",
+      "avg_correlation": 0.09146922951266653
+    },
+    {
+      "category": "Engineered - Planet/Star",
+      "avg_correlation": 0.07831514925584698
+    },
+    {
+      "category": "Engineered - Orbital",
+      "avg_correlation": 0.07301867229302814
+    },
+    {
+      "category": "Engineered - Colors",
+      "avg_correlation": 0.06458756300655401
+    }
+  ]
+}

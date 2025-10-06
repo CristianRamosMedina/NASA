@@ -1,8 +1,0 @@
-feature,type,is_flag,metric_name,metric_value,p_value,is_significant,is_selected,n_samples
-st_brightness_norm,continuous,False,spearman,0.29867858045554796,1.6783793746780268e-158,True,True,7703
-st_tmag,continuous,False,spearman,0.29867858045554796,1.6783793746780268e-158,True,True,7703
-st_tmag_value,continuous,False,spearman,0.29867858045554796,1.6783793746780268e-158,True,True,7703
-st_brightness_dist_product,continuous,False,spearman,0.2970080037225855,2.350017161582879e-152,True,True,7488
-st_distance_norm,continuous,False,spearman,0.23787425916430818,7.969446261072567e-97,True,True,7488
-st_dist,continuous,False,spearman,0.23787425916430818,7.969446261072567e-97,True,True,7488
-st_dist_value,continuous,False,spearman,0.23787425916430818,7.969446261072567e-97,True,True,7488

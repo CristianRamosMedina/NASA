@@ -161,6 +161,36 @@ Created from base features using physical/astronomical principles:
 19. **snr_per_transit**: `koi_model_snr / sqrt(koi_num_transits)`
     - *Why*: Indicates per-transit signal strength
 
+### 📊 Feature Correlations & Importance
+
+#### Correlation Analysis
+
+![Correlation Bar Chart](kepler/correlation_bar_chart.png)
+
+**Top 20 features by correlation with exoplanet classification:**
+- Positive correlation (green) = More likely to be an exoplanet
+- Negative correlation (red) = Less likely to be an exoplanet
+
+#### Correlation Heatmap
+
+![Correlation Heatmap](kepler/correlation_heatmap.png)
+
+**Heatmap shows inter-feature correlations:**
+- Green = Positive correlation between features
+- Red = Negative correlation
+- Helps identify redundant features and feature relationships
+
+#### Feature Category Performance
+
+![Correlation by Category](kepler/correlation_by_category.png)
+
+**Average correlation strength by feature category:**
+- Blue bars = Base features
+- Red bars = Engineered features
+- Shows which feature groups contribute most to classification
+
+---
+
 ### Top 10 Most Important Features
 
 | Rank | Feature | Importance | Category |
